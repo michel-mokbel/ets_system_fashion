@@ -1,0 +1,220 @@
+containers.php:1218 Current page: containers.php
+containers.php:1226 Section: #inventoryGroup PHP expanded: false Has active page: false
+containers.php:1226 Section: #procurementGroup PHP expanded: true Has active page: true
+containers.php:1226 Section: #salesGroup PHP expanded: false Has active page: false
+containers.php:1226 Section: #catalogGroup PHP expanded: false Has active page: false
+containers.php:1226 Section: #systemGroup PHP expanded: false Has active page: false
+containers.php:1291 Restored section from localStorage: #inventoryGroup
+containers.php:1279 Expanded section: #procurementGroup (contains active page)
+containers.js:21 Modals initialized: 10
+containers.js:1016 === OPENING MANAGE ITEMS MODAL ===
+containers.js:1017 Container ID: 22
+containers.js:1029 Container ID stored in modal: 22
+containers.js:1043 === LOADING CONTAINER ITEMS ===
+containers.js:1044 Container ID: 22
+containers.js:1045 CSRF Token: ca6ec6c0dae496eb56ad6ae0721d8cabffd8aba8c6e7b888f1e14a06b46a95b0
+containers.js:1057 AJAX request starting...
+containers.js:1060 AJAX response received: {success: true, data: Array(2)}
+containers.js:1141 === POPULATING CONTAINER ITEMS MODAL ===
+containers.js:1142 Container: {id: 22}
+containers.js:1143 Items: (2) [{…}, {…}]
+containers.js:1144 Items length: 2
+containers.js:1154 Item 0: {id: 75, container_id: 22, item_type: 'existing_item', item_id: 96, quantity_in_container: 1, …}
+containers.js:1185 === CREATING TABLE ROW ===
+containers.js:1186 Item data: {id: 75, container_id: 22, item_type: 'existing_item', item_id: 96, quantity_in_container: 1, …}
+containers.js:1187 Item type display: item
+containers.js:1188 Box type: undefined
+containers.js:1189 Warehouse box ID: undefined
+containers.js:1190 Context: manage
+containers.js:1264 Generated row HTML: 
+        <tr data-item-id="75" data-item-type="item">
+            <td>
+                <div class="d-flex align-items-center">
+                    <span class="badge bg-primary me-2">Existing Item</span>
+                    <strong>test</strong>
+                </div>
+            </td>
+            <td>1</td>
+            <td>CFA 20.00</td>
+            <td>CFA 20.00</td>
+            <td>CFA 90.00</td>
+            <td>8/26/2025</td>
+            <td>
+                <div class="btn-group btn-group-sm" role="group">
+                    
+                        <button class="btn btn-outline-primary btn-sm edit-item" data-item-id="75" title="Edit Item">
+                            <i class="bi bi-pencil"></i>
+                        </button>
+                    
+                    
+                        <button class="btn btn-outline-danger btn-sm remove-item" data-item-id="75" title="Remove Item">
+                            <i class="bi bi-trash"></i>
+                        </button>
+                    
+                </div>
+            </td>
+        </tr>
+    
+containers.js:1265 Can edit: true
+containers.js:1266 Can remove: true
+containers.js:1154 Item 1: {id: 33, container_id: 22, box_type: 'existing', warehouse_box_id: 32, new_box_number: null, …}
+containers.js:1185 === CREATING TABLE ROW ===
+containers.js:1186 Item data: {id: 33, container_id: 22, box_type: 'existing', warehouse_box_id: 32, new_box_number: null, …}
+containers.js:1187 Item type display: box
+containers.js:1188 Box type: existing
+containers.js:1189 Warehouse box ID: 32
+containers.js:1190 Context: manage
+containers.js:1264 Generated row HTML: 
+        <tr data-item-id="33" data-item-type="box">
+            <td>
+                <div class="d-flex align-items-center">
+                    <span class="badge bg-success me-2">Box</span>
+                    <strong>test</strong>
+                </div>
+            </td>
+            <td>1</td>
+            <td>CFA 50.00</td>
+            <td>CFA 50.00</td>
+            <td>CFA 0.00</td>
+            <td>8/26/2025</td>
+            <td>
+                <div class="btn-group btn-group-sm" role="group">
+                    
+                        <button class="btn btn-outline-primary btn-sm edit-item" data-item-id="33" title="Edit Item">
+                            <i class="bi bi-pencil"></i>
+                        </button>
+                    
+                    
+                        <button class="btn btn-outline-danger btn-sm remove-item" data-item-id="33" title="Remove Item">
+                            <i class="bi bi-trash"></i>
+                        </button>
+                    
+                </div>
+            </td>
+        </tr>
+    
+containers.js:1265 Can edit: true
+containers.js:1266 Can remove: true
+containers.js:1168 Add Item Buttons hidden (no permission)
+containers.js:1173 Stored container ID in modal: 22
+containers.js:1174 Modal data after storing: 22
+containers.js:1177 Initial addItemButtons display: none
+containers.js:1178 Initial addItemButtons visibility: false
+containers.js:289 === ADD ITEM TYPE BUTTON CLICKED ===
+containers.js:294 Modal ID: manageItemsModal
+containers.js:297 Add item clicked: {modalId: 'manageItemsModal', itemType: 'box'}
+containers.js:298 Button data: {itemType: 'box'}
+containers.js:312 Opening add item modal for existing container: 22
+containers.js:1360 Setting container_id in modal #addBoxItemModal to: 22
+containers.js:1361 Container ID field found: true
+containers.js:1362 Container ID field value after setting: 22
+containers.js:1363 Container ID field HTML: <input type="hidden" name="container_id" id="addBoxContainerId" value="22">
+containers.js:1364 Form HTML: <form action="#" method="POST" class="needs-validation" novalidate="">
+                <input type="hidden" name="csrf_token" value="ca6ec6c0dae496eb56ad6ae0721d8cabffd8aba8c6e7b888f1e14a06b46a95b0">
+                <input type="hidden" name="action" value="add_item">
+                <input type="hidden" name="item_type" value="box">
+                <input type="hidden" name="container_id" id="addBoxContainerId" value="22">
+                
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label class="form-label">Box Selection *</label>
+                        <div class="d-grid gap-2">
+                            <button type="button" class="btn btn-outline-primary" id="selectExistingBoxBtn">
+                                <i class="bi bi-search me-2"></i>Select Existing Box
+                            </button>
+                            <button type="button" class="btn btn-outline-success" id="createNewBoxBtn">
+                                <i class="bi bi-plus-circle me-2"></i>Create New Box
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- Existing Box Selection Section -->
+                    <div id="existingBoxSection" style="display: none;">
+                        <div class="mb-3">
+                            <label for="warehouseBoxId" class="form-label">Select Warehouse Box *</label>
+                            <select class="form-select" id="warehouseBoxId" name="warehouse_box_id">
+                                <option value="">Choose a warehouse box...</option>
+                                <!-- Options will be loaded dynamically -->
+                            </select>
+                            <div class="invalid-feedback">Please select a warehouse box</div>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="boxQuantity" class="form-label">Quantity to Add *</label>
+                            <input type="number" class="form-control" id="boxQuantity" name="quantity" min="1" required="">
+                            <div class="invalid-feedback">Please enter a valid quantity</div>
+                            <small class="text-muted">Current stock: <span id="boxAvailableQuantity">-</span> (informational only)</small>
+                        </div>
+                    </div>
+                    
+                    <!-- New Box Creation Section -->
+                    <div id="newBoxSection" style="display: none;">
+                        <div class="mb-3">
+                            <label for="newBoxNumber" class="form-label">Box Number *</label>
+                            <input type="text" class="form-control" id="newBoxNumber" name="new_box_number" placeholder="e.g., BOX-001" required="">
+                            <div class="form-text">Unique identifier for the box (e.g., BOX-001).</div>
+                            <div class="invalid-feedback">Please enter a box number</div>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="newBoxName" class="form-label">Box Name *</label>
+                            <input type="text" class="form-control" id="newBoxName" name="new_box_name" placeholder="e.g., Premium Box" required="">
+                            <div class="form-text">Descriptive name for the box.</div>
+                            <div class="invalid-feedback">Please enter a box name</div>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="newBoxType" class="form-label">Box Type</label>
+                            <input type="text" class="form-control" id="newBoxType" name="new_box_type" placeholder="e.g., SHEIN, ZARA, etc.">
+                            <div class="form-text">Optional: Category or type of items in this box.</div>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="newBoxUnitCost" class="form-label">Unit Cost (CFA)</label>
+                            <input type="number" class="form-control" id="newBoxUnitCost" name="new_box_unit_cost" step="0.01" min="0" value="0" placeholder="0.00">
+                            <div class="form-text">Cost per box unit in CFA currency.</div>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="newBoxQuantity" class="form-label">Box Quantity *</label>
+                            <input type="number" class="form-control" id="newBoxQuantity" name="new_box_quantity" min="1" value="1" required="">
+                            <div class="form-text">How many of this box type to create and add to your inventory.</div>
+                            <div class="invalid-feedback">Please enter a valid quantity</div>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="newBoxNotes" class="form-label">Notes</label>
+                            <textarea class="form-control" id="newBoxNotes" name="new_box_notes" rows="3" placeholder="Additional notes about this box..."></textarea>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-success">
+                        <i class="bi bi-plus-circle me-1"></i>Add Box
+                    </button>
+                </div>
+            </form>
+containers.js:663 Showing new box section
+containers.js:606 === BOX FORM SUBMITTED ===
+containers.js:607 Form element: <form action=​"#" method=​"POST" class=​"needs-validation was-validated" novalidate>​…​</form>​
+containers.js:608 Form data: FormData {}
+containers.js:609 Container ID field value: 22
+containers.js:610 addContainerModal show class: false
+containers.js:618 Handling for existing container
+containers.js:1722 handleAddItemForm called with itemType: box
+containers.js:1723 Form data: FormData {}
+containers.js:715 Validating form: <form action=​"#" method=​"POST" class=​"needs-validation was-validated" novalidate>​…​</form>​
+containers.js:717 Form validity: true
+containers.js:1749 Container ID field found: true
+containers.js:1750 Container ID field value: 22
+containers.js:1751 Container ID field HTML: <input type="hidden" name="container_id" id="addBoxContainerId" value="22">
+containers.js:1769 Form elements: (12) [{…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}]
+containers.js:1773 CSRF token from form: ca6ec6c0dae496eb56ad6ae0721d8cabffd8aba8c6e7b888f1e14a06b46a95b0
+containers.js:1774 CSRF token from page: ca6ec6c0dae496eb56ad6ae0721d8cabffd8aba8c6e7b888f1e14a06b46a95b0
+containers.js:1787 Making AJAX request to process_container.php
+containers.js:1788 Form data being sent: {csrf_token: 'ca6ec6c0dae496eb56ad6ae0721d8cabffd8aba8c6e7b888f1e14a06b46a95b0', action: 'add_item', item_type: 'box', container_id: '22', warehouse_box_id: '', …}
+containers.js:1798 AJAX request starting...
+common.js:659 Removing aria-hidden from wrapper for accessibility
+common.js:659 Removing aria-hidden from wrapper for accessibility
