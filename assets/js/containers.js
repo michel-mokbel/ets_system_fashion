@@ -1,6 +1,14 @@
 /**
- * Simplified Container Management JavaScript
- * Single bulk mode with total weight and total price only
+ * Procurement container workflow controller.
+ *
+ * Responsibilities:
+ * - Coordinate all modal interactions for creating/updating containers, including bulk item entry, box linking, and duplicate code validation.
+ * - Maintain client-side collections (items, expenses, payments) to mirror the nested JSON payload expected by `../ajax/process_container.php`.
+ * - Surface analytics summaries (weights, totals, margin calculations) and debug tooling to help administrators verify imports.
+ *
+ * Dependencies:
+ * - jQuery and Bootstrap modals for event handling, SweetAlert for validation messaging, and Select2/Flatpickr where present in the markup.
+ * - Backend endpoints `../ajax/get_containers.php`, `../ajax/process_container.php`, and related item/analytics fetchers invoked throughout the file.
  */
 
 document.addEventListener('DOMContentLoaded', function() {

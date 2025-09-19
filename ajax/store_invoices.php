@@ -1,4 +1,10 @@
 <?php
+/**
+ * Store invoice listing endpoint.
+ *
+ * Supplies the store invoice page with paginated invoice data filtered by
+ * status and date range, ensuring results are scoped to the logged-in store.
+ */
 require_once 'ajax_session_init.php';
 require_once '../includes/db.php';
 require_once '../includes/functions.php';

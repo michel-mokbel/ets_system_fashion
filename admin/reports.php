@@ -1,4 +1,15 @@
 <?php
+/**
+ * Administrative Reporting Hub
+ * -----------------------------
+ * Serves as the configurable reporting surface for administrators, aggregating
+ * sales, inventory, transfer, and financial data based on the selected report
+ * type and date/time filters. The page runs bespoke SQL queries directly to
+ * produce tabular summaries and charts, while also delegating some datasets to
+ * asynchronous requests consumed by `assets/js/store_reports.js`. Authentication
+ * and localization are ensured via the shared header before rendering the
+ * dynamic content.
+ */
 ob_start();
 require_once '../includes/session_config.php';
 session_start();

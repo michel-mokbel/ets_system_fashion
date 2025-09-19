@@ -1,4 +1,14 @@
 <?php
+/**
+ * Global helper library for ETS System Fashion.
+ * ---------------------------------------------
+ * Centralizes authentication helpers, store/role authorization checks,
+ * formatting utilities, and the majority of reusable inventory and transfer
+ * routines. The POS and admin portals both include this file to keep their
+ * business rules aligned. As a result, functions should remain side-effect
+ * free unless explicitly updating the database.
+ */
+
 // Turn off error reporting to prevent HTML output
 error_reporting(0);
 ini_set('display_errors', 0);
@@ -77,6 +87,16 @@ function can_access_store($store_id) {
 }
 
 // Utility functions
+/**
+ * Normalize potentially unsafe user input before storing/using it.
+ *
+ * While prepared statements protect SQL queries, many pages echo the raw
+ * values back to the browser. This helper applies basic trimming and HTML
+ * escaping to stop accidental injection of markup.
+ *
+ * @param string $data
+ * @return string
+ */
 function sanitize_input($data) {
     $data = trim($data);
     $data = stripslashes($data);
@@ -84,6 +104,16 @@ function sanitize_input($data) {
     return $data;
 }
 
+/**
+ * Issue an HTTP redirect and terminate execution.
+ *
+ * Wrapping the `header()` call keeps controllers concise and centralizes the
+ * `exit()` call so future logging hooks can be introduced without touching
+ * every usage site.
+ *
+ * @param string $url
+ * @return void
+ */
 function redirect($url) {
     header("Location: $url");
     exit();

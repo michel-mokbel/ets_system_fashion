@@ -1,4 +1,11 @@
 <?php
+/**
+ * Fetches a single category record.
+ *
+ * Used to populate the edit modal in the category management UI. Verifies admin
+ * privileges, validates the provided identifier, and returns the category row as
+ * JSON.
+ */
 require_once 'ajax_session_init.php';
 require_once '../includes/db.php';
 require_once '../includes/functions.php';

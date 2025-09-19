@@ -1,4 +1,14 @@
 <?php
+/**
+ * Administrative Expense Oversight
+ * --------------------------------
+ * Equips administrators with a consolidated view of expense submissions across
+ * all stores. The page loads the shared header for authentication, exposes
+ * filters for store, status, and date ranges, and renders a DataTable managed by
+ * `assets/js/admin_expenses.js`. Expense records are fetched through
+ * `ajax/store_expenses.php`, while approvals and edits are processed via
+ * `ajax/process_expense.php` to keep accounting controls centralized.
+ */
 require_once '../includes/header.php';
 if (!is_admin()) {
     redirect('../index.php');

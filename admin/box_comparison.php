@@ -1,4 +1,15 @@
 <?php
+/**
+ * Box Quantity Comparison Dashboard
+ * ---------------------------------
+ * Provides procurement and warehouse teams with a real-time comparison between
+ * the quantities recorded when containers were unpacked and the current stock
+ * levels stored in warehouse boxes. The page leverages the header bootstrap for
+ * authentication, exposes CSRF tokens for AJAX calls, and relies on
+ * `assets/js/boxes.js` in combination with `ajax/get_box_comparison.php` to
+ * populate statistic cards, charts, and discrepancy tables for reconciliation
+ * work.
+ */
 ob_start();
 require_once '../includes/header.php';
 

@@ -1,4 +1,10 @@
 <?php
+/**
+ * POS barcode lookup endpoint.
+ *
+ * Searches for active items assigned to the current store by barcode, enforces
+ * stock availability, and returns pricing information for the POS cart.
+ */
 require_once 'ajax_session_init.php';
 require_once '../includes/db.php';
 require_once '../includes/functions.php';

@@ -1,4 +1,10 @@
 <?php
+/**
+ * Fetches a single subcategory record for editing.
+ *
+ * Validates admin permissions, ensures the subcategory exists, and returns the
+ * row as JSON for edit modals.
+ */
 require_once 'ajax_session_init.php';
 require_once '../includes/db.php';
 require_once '../includes/functions.php';

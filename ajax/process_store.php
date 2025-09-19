@@ -1,4 +1,11 @@
 <?php
+/**
+ * Store administration endpoint.
+ *
+ * Handles create, update, and delete actions for store records, managing
+ * manager assignments and enforcing CSRF protection before returning JSON
+ * messages.
+ */
 require_once 'ajax_session_init.php';
 require_once '../includes/db.php';
 require_once '../includes/functions.php';

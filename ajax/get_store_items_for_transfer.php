@@ -1,4 +1,10 @@
 <?php
+/**
+ * Lists source store items available for transfer.
+ *
+ * Validates available quantities, respects store assignments, and returns JSON
+ * so the transfer workflow can build shipments from eligible stock.
+ */
 require_once 'ajax_session_init.php';
 require_once '../includes/db.php';
 require_once '../includes/functions.php';

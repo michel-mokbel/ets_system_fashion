@@ -1,4 +1,12 @@
 <?php
+/**
+ * POS Return Processing Endpoint
+ * ------------------------------
+ * Reverses a previously issued invoice by creating a return header and line
+ * items, crediting stock back to the originating store, and updating the
+ * invoice payment status. This script mirrors the sale endpoint structure so
+ * that both features remain easy to audit.
+ */
 require_once 'ajax_session_init.php';
 require_once '../includes/db.php';
 require_once '../includes/functions.php';
@@ -27,6 +35,7 @@ $original_invoice_id = intval($_POST['original_invoice_id'] ?? 0);
 $return_reason = trim($_POST['return_reason'] ?? '');
 $return_type = $_POST['return_type'] ?? 'partial';
 $notes = trim($_POST['notes'] ?? '');
+// Items may arrive as a JSON string when posted via XHR
 $items = $_POST['items'] ?? [];
 if (is_string($items)) {
     $decoded = json_decode($items, true);

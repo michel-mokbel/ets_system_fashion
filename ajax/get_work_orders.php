@@ -1,4 +1,11 @@
 <?php
+/**
+ * Work order listing endpoint.
+ *
+ * Delivers paginated work order data with filters for status, schedule, and
+ * assets to power the maintenance management grid. Requires maintenance
+ * privileges and emits DataTables JSON.
+ */
 require_once 'ajax_session_init.php';
 require_once '../includes/db.php';
 require_once '../includes/functions.php';

@@ -1,4 +1,11 @@
 <?php
+/**
+ * Fetches a single inventory item for editing.
+ *
+ * Returns catalog attributes, pricing, and assignment hints to populate admin
+ * edit dialogs. Ensures the caller has inventory privileges before emitting
+ * JSON.
+ */
 require_once 'ajax_session_init.php';
 require_once '../includes/db.php';
 require_once '../includes/functions.php';

@@ -1,4 +1,15 @@
 <?php
+/**
+ * Barcode Rendering Helper
+ * ------------------------
+ * Invoked inside `admin/barcode.php` to output the selected barcode format as
+ * inline HTML or an image tag. The script wires up the Picqer barcode
+ * generator library, constrains rendering to the Code128 variants used across
+ * the application, and echoes markup combined with a human-readable barcode
+ * caption. Front-end scripts embed this endpoint inside iframes to preview and
+ * print batches of labels without exposing the PHP barcode library directly in
+ * the browser bundle.
+ */
 // admin/barcode_image.php
 $barcode = $_GET['barcode'] ?? '';
 $format = $_GET['format'] ?? 'png';

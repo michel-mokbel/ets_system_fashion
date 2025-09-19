@@ -1,4 +1,12 @@
 <?php
+/**
+ * Administrative user management endpoint.
+ *
+ * Provides server-side support for the admin users DataTable, handling list,
+ * create, update, and delete actions via the `action` parameter. Requests are
+ * restricted to authenticated admins, expect CSRF tokens for mutating flows,
+ * and respond with JSON structures consumed by `assets/js/admin_users.js`.
+ */
 require_once 'ajax_session_init.php';
 require_once '../includes/db.php';
 require_once '../includes/functions.php';

@@ -1,5 +1,14 @@
 /**
- * Warehouse Boxes Management JavaScript
+ * Warehouse box administration controller.
+ *
+ * Responsibilities:
+ * - Configure the server-side DataTable for warehouse boxes, inject filter criteria, and surface live summary statistics.
+ * - Manage nested detail rows that display item contents, and expose CRUD modals backed by `../ajax/process_boxes.php`.
+ * - Provide diagnostic logging hooks that help debug mismatched payloads when admins troubleshoot box data.
+ *
+ * Dependencies:
+ * - jQuery, DataTables (with responsive extension), and SweetAlert for confirmations.
+ * - Bootstrap modals for form presentation and backend endpoints `../ajax/get_boxes.php` (list) and `../ajax/process_boxes.php` (mutations).
  */
 
 document.addEventListener('DOMContentLoaded', function() {

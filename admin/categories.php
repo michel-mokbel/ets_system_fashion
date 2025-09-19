@@ -1,4 +1,14 @@
 <?php
+/**
+ * Category Administration
+ * -----------------------
+ * Provides administrators and inventory managers with tools to manage product
+ * category metadata. The page enforces authentication via the shared header,
+ * seeds CSRF tokens for AJAX interactions, and renders a DataTable driven by
+ * `assets/js/categories.js`. Create/update/delete operations are executed
+ * through `ajax/process_category.php`, while the listing and edit forms pull
+ * from `ajax/get_categories.php` and `ajax/get_category.php` respectively.
+ */
 require_once '../includes/header.php';
 
 if (!is_logged_in()) {

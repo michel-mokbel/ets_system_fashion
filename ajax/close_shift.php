@@ -1,4 +1,12 @@
 <?php
+/**
+ * Manual shift closure endpoint.
+ *
+ * Allows authenticated store personnel to close their active shift on demand.
+ * Validates CSRF tokens, summarizes the shift using helpers from
+ * `includes/shift_functions.php`, persists the closure, and returns the same
+ * summary structure used by the enforced logout modal.
+ */
 require_once 'ajax_session_init.php';
 require_once '../includes/db.php';
 require_once '../includes/functions.php';

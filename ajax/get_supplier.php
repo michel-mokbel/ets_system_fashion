@@ -1,4 +1,10 @@
 <?php
+/**
+ * Retrieves a supplier record for editing.
+ *
+ * Populates the supplier modal with contact and status details. Access limited
+ * to admins, with responses returned as JSON.
+ */
 require_once 'ajax_session_init.php';
 require_once '../includes/db.php';
 require_once '../includes/functions.php';

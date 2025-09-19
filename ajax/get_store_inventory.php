@@ -1,4 +1,11 @@
 <?php
+/**
+ * Store-level inventory feed.
+ *
+ * Provides item stock levels, barcode assignments, and status flags for a
+ * specific store. Used across store dashboards and adjustment dialogs while
+ * enforcing access control.
+ */
 require_once 'ajax_session_init.php';
 require_once '../includes/db.php';
 require_once '../includes/functions.php';

@@ -1,4 +1,12 @@
 <?php
+/**
+ * Enforced logout data provider.
+ *
+ * When a store user attempts to log out, this endpoint ensures any open shift
+ * is summarized and optionally closed. Returns totals for sales, expenses,
+ * returns, and shift duration so the logout modal can display the information
+ * and require acknowledgement before the session ends.
+ */
 require_once 'ajax_session_init.php';
 require_once '../includes/db.php';
 require_once '../includes/functions.php';

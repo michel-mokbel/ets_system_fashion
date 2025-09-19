@@ -1,4 +1,11 @@
 <?php
+/**
+ * Supplier CRUD handler.
+ *
+ * Processes add, update, and delete actions for suppliers, including contact
+ * details and status updates, while enforcing admin-only access and CSRF
+ * validation before returning JSON responses.
+ */
 require_once 'ajax_session_init.php';
 require_once '../includes/db.php';
 require_once '../includes/functions.php';

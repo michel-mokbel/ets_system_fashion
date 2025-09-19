@@ -1,5 +1,14 @@
 /**
- * Common JavaScript functions for Mali Inventory System
+ * Global UX bootstrap utilities shared across every page.
+ *
+ * Responsibilities:
+ * - Wire sidebar toggle behaviour (desktop collapse persistence, mobile overlay, keyboard shortcut) and broadcast events for dependent modules.
+ * - Initialize Bootstrap tooltips/popovers, DataTable defaults, AJAX form helpers, and sidebar menu interactions consumed by individual screens.
+ * - Provide cross-cutting helpers (`toggleSidebar`, `updateToggleIcon`, etc.) that other scripts call via the global scope.
+ *
+ * Dependencies:
+ * - jQuery for event handling and DOM manipulation, DataTables for shared grid defaults, and Bootstrap 5 JavaScript for tooltips/offcanvas components.
+ * - Local storage for persisting sidebar collapsed state between sessions.
  */
 
 // Initialize all common functionality when DOM is ready

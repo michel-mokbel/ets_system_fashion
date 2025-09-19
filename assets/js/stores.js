@@ -1,3 +1,15 @@
+/**
+ * Store directory management controller.
+ *
+ * Responsibilities:
+ * - Initialize the stores DataTable with CSRF-protected server-side queries and responsive layout.
+ * - Drive add/edit/delete workflows including manager assignment dropdowns and POS shortcut links.
+ * - Use SweetAlert for confirmation prompts and integrate with `../ajax/process_store.php` for mutations.
+ *
+ * Dependencies:
+ * - jQuery, DataTables, SweetAlert, Bootstrap modals, and helper functions defined in `script.js`.
+ * - Backend endpoints `../ajax/get_stores.php` and `../ajax/process_store.php`, plus `../ajax/admin_users.php` for manager lists.
+ */
 $(document).ready(function() {
     const csrfToken = $('#csrf_token').val();
     // Initialize DataTable

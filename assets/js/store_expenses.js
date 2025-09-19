@@ -1,3 +1,15 @@
+/**
+ * Store expense listing controller.
+ *
+ * Responsibilities:
+ * - Fetch store-level expenses filtered by date, category, and status from `../ajax/store_expenses.php`.
+ * - Render the results into the table body and provide placeholders for view/print actions.
+ * - Refresh the listing in response to filter submissions without reloading the page.
+ *
+ * Dependencies:
+ * - jQuery for event handling and AJAX; Bootstrap styling for table badges.
+ * - Backend endpoint `../ajax/store_expenses.php`.
+ */
 $(document).ready(function() {
     function loadExpenses() {
         const params = {

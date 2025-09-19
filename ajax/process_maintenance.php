@@ -1,4 +1,11 @@
 <?php
+/**
+ * Maintenance schedule CRUD endpoint.
+ *
+ * Creates, updates, and deletes preventive maintenance plans, handling
+ * recurrence configuration, asset associations, and CSRF enforcement before
+ * returning JSON responses.
+ */
 require_once 'ajax_session_init.php';
 require_once '../includes/db.php';
 require_once '../includes/functions.php';

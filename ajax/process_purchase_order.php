@@ -1,4 +1,11 @@
 <?php
+/**
+ * Purchase order workflow endpoint.
+ *
+ * Handles PO creation and updates, persists header and line items, manages
+ * supplier associations, and enforces CSRF protection before returning JSON
+ * responses.
+ */
 require_once 'ajax_session_init.php';
 require_once '../includes/db.php';
 require_once '../includes/functions.php';

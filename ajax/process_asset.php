@@ -1,4 +1,11 @@
 <?php
+/**
+ * Asset CRUD handler.
+ *
+ * Processes create, update, and delete actions from the asset management UI,
+ * validating inputs, enforcing CSRF tokens, and persisting changes before
+ * returning JSON feedback messages.
+ */
 require_once 'ajax_session_init.php';
 require_once '../includes/db.php';
 require_once '../includes/functions.php';

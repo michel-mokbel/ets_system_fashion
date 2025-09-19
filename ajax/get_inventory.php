@@ -1,4 +1,11 @@
 <?php
+/**
+ * Comprehensive inventory listing endpoint.
+ *
+ * Powers the admin inventory DataTable by joining catalog metadata, store stock
+ * levels, and container references. Applies search and filter criteria, enforces
+ * store scoping for non-admins, and outputs DataTables-friendly JSON.
+ */
 require_once 'ajax_session_init.php';
 require_once '../includes/db.php';
 require_once '../includes/functions.php';

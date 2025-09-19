@@ -1,4 +1,11 @@
 <?php
+/**
+ * Lists all items tied to a procurement container.
+ *
+ * Feeds the nested tables in the container management UI by returning serialized
+ * item, box, and quantity data. Only administrators may call this endpoint and
+ * responses are emitted as JSON.
+ */
 require_once 'ajax_session_init.php';
 require_once '../includes/db.php';
 require_once '../includes/functions.php';

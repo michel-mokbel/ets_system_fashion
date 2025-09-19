@@ -1,4 +1,11 @@
 <?php
+/**
+ * Warehouse box CRUD endpoint.
+ *
+ * Manages creation, updating, and deletion of warehouse boxes, ensuring unique
+ * identifiers, managing container associations, and returning JSON results for
+ * the warehouse UI.
+ */
 require_once '../includes/session_config.php';
 
 // Start session if not already started

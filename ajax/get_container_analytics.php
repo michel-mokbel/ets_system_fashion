@@ -1,4 +1,11 @@
 <?php
+/**
+ * Container analytics endpoint.
+ *
+ * Computes profitability, weight, and cost metrics for procurement containers
+ * so the dashboard can surface actionable insights. Results are filtered by the
+ * requesting admin’s criteria and delivered as JSON arrays.
+ */
 require_once 'ajax_session_init.php';
 require_once '../includes/db.php';
 require_once '../includes/functions.php';

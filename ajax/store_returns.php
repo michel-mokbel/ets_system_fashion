@@ -1,4 +1,10 @@
 <?php
+/**
+ * Store returns listing endpoint.
+ *
+ * Provides return records initiated by the current store with status and date
+ * filters, allowing managers to audit return history.
+ */
 require_once 'ajax_session_init.php';
 require_once '../includes/db.php';
 require_once '../includes/functions.php';

@@ -1,5 +1,14 @@
 /**
- * Suppliers Management JavaScript
+ * Supplier directory controller.
+ *
+ * Responsibilities:
+ * - Initialize the suppliers DataTable with filters, contact links, and status badges.
+ * - Manage modals for viewing/editing supplier information and handle deletions via SweetAlert confirmations.
+ * - Submit CRUD operations to `../ajax/process_supplier.php` and refresh the grid on success.
+ *
+ * Dependencies:
+ * - jQuery, DataTables, SweetAlert, Bootstrap modals.
+ * - Backend endpoints `../ajax/get_suppliers.php` and `../ajax/process_supplier.php`.
  */
 
 document.addEventListener('DOMContentLoaded', function() {

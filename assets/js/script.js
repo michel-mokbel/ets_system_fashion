@@ -1,6 +1,14 @@
 /**
- * Inventory & Maintenance Management System
- * Common JavaScript Functions
+ * Legacy global helpers bundled on most admin pages.
+ *
+ * Responsibilities:
+ * - Provide default DataTable initialization, Bootstrap datepicker wiring, and client-side validation rules for standard forms.
+ * - Offer reusable confirmation dialogs, tooltip/popover activation, and responsive sidebar tweaks for mobile layouts.
+ * - Expose utility functions (`showToast`, `showLoader`, etc.) consumed by feature-specific modules.
+ *
+ * Dependencies:
+ * - jQuery, DataTables, SweetAlert, Bootstrap, and flatpickr (or alternative datepicker) depending on the markup.
+ * - Works alongside `common.js` – this file focuses on component initialization while `common.js` manages layout chrome.
  */
 
 document.addEventListener('DOMContentLoaded', function() {

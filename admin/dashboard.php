@@ -1,4 +1,14 @@
 <?php
+/**
+ * Administrator Landing Dashboard
+ * -------------------------------
+ * Presents high-level metrics and recent activity tables for administrators as
+ * soon as they log in. The layout is intentionally mobile-friendly, loading
+ * placeholder values that are asynchronously hydrated by
+ * `assets/js/admin_dashboard.js` via `ajax/admin_dashboard.php`. Access is
+ * restricted to admin roles, and the shared header ensures language and
+ * security bootstrapping before the cards and tables are rendered.
+ */
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);

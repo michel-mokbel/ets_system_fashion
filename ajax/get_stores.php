@@ -1,4 +1,10 @@
 <?php
+/**
+ * Provides store listings for dropdowns and DataTables.
+ *
+ * Supports filtering by status and search term while enforcing admin access.
+ * Returns results in JSON suitable for the stores management page.
+ */
 require_once 'ajax_session_init.php';
 require_once '../includes/db.php';
 require_once '../includes/functions.php';

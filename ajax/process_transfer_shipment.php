@@ -1,4 +1,11 @@
 <?php
+/**
+ * Transfer shipment finalization endpoint.
+ *
+ * Records outbound and inbound box movements, updates shipment statuses, and
+ * logs inventory transactions for transfer workflows. Returns JSON feedback to
+ * the UI.
+ */
 require_once 'ajax_session_init.php';
 require_once '../includes/db.php';
 require_once '../includes/functions.php';

@@ -1,4 +1,11 @@
 <?php
+/**
+ * Server-side DataTable source for asset listings.
+ *
+ * Applies filters for category, location, status, and search terms while
+ * enforcing admin permissions. Returns a DataTables-compatible JSON payload
+ * consumed by `assets/js/assets.js`.
+ */
 require_once 'ajax_session_init.php';
 require_once '../includes/db.php';
 require_once '../includes/functions.php';

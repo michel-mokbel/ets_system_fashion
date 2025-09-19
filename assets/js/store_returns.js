@@ -1,3 +1,15 @@
+/**
+ * Store return listing controller.
+ *
+ * Responsibilities:
+ * - Retrieve return summaries for the active store via `../ajax/store_returns.php` with filter criteria.
+ * - Render result rows, status badges, and action buttons for future detail/print functionality.
+ * - Refresh the table when filter forms submit without a full reload.
+ *
+ * Dependencies:
+ * - jQuery for AJAX/event handling and Bootstrap for styling.
+ * - Backend endpoint `../ajax/store_returns.php`.
+ */
 $(document).ready(function() {
     function loadReturns() {
         const params = {

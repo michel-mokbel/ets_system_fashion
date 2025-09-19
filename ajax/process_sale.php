@@ -1,4 +1,14 @@
 <?php
+/**
+ * POS Sale Processing Endpoint
+ * -----------------------------
+ * Accepts the serialized cart payload from the POS interface and persists a
+ * finalized invoice. The handler guards against CSRF/session tampering,
+ * validates the cart structure, records invoice headers/items, and finally
+ * decrements store stock using {@see update_store_inventory} inside a single
+ * database transaction. The endpoint always responds with JSON to keep the
+ * front-end logic simple.
+ */
 require_once 'ajax_session_init.php';
 require_once '../includes/db.php';
 require_once '../includes/functions.php';
@@ -24,6 +34,7 @@ if (!in_array($role, ['store_manager', 'sales_person', 'admin'])) {
     exit;
 }
 
+// Cart can arrive as an array (AJAX form submit) or JSON string (fallback)
 $cart = $_POST['cart'] ?? [];
 if (is_string($cart)) {
     $decoded = json_decode($cart, true);
@@ -51,6 +62,7 @@ error_log("Sale Debug - Cart empty: " . (empty($cart) ? 'YES' : 'NO'));
 error_log("Sale Debug - Cart is array: " . (is_array($cart) ? 'YES' : 'NO'));
 error_log("Sale Debug - Total: " . $total . " (Total < 0: " . ($total < 0 ? 'YES' : 'NO') . ")");
 
+// Basic sanity checks: we expect at least one line and a non-negative total
 if (empty($cart) || !is_array($cart) || $total < 0) {
     $debug_message = 'Cart validation failed: ';
     if (empty($cart)) $debug_message .= 'Cart is empty. ';

@@ -1,4 +1,15 @@
-// assets/js/barcode-render.js
+/**
+ * Barcode preview and print helper for the admin barcode console.
+ *
+ * Responsibilities:
+ * - Read dataset attributes from `#barcodeArea` to determine the symbology, format, and number of copies to render.
+ * - Stream HTML/SVG barcode markup from `barcode_image.php` via the Fetch API and inject multiple print-ready panels.
+ * - Provide a lightweight print dialog that waits for all images to load before invoking `window.print()` in a popup.
+ *
+ * Dependencies:
+ * - Native browser APIs (Fetch, DOM) – no jQuery requirements.
+ * - Server endpoint `barcode_image.php` which returns the generated barcode markup for the requested format.
+ */
 
 document.addEventListener('DOMContentLoaded', function() {
     const barcodeArea = document.getElementById('barcodeArea');

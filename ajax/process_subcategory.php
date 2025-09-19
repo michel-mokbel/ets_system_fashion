@@ -1,4 +1,10 @@
 <?php
+/**
+ * Subcategory management endpoint.
+ *
+ * Supports CRUD operations on subcategories, ensuring parent category
+ * integrity, enforcing CSRF protection, and returning JSON messages to the UI.
+ */
 require_once 'ajax_session_init.php';
 require_once '../includes/db.php';
 require_once '../includes/functions.php';

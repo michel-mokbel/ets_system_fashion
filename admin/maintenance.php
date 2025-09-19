@@ -1,4 +1,14 @@
 <?php
+/**
+ * Preventive Maintenance Scheduler
+ * --------------------------------
+ * Lets administrators coordinate recurring maintenance tasks across assets.
+ * The page validates authentication, optionally hydrates context for a specific
+ * asset, and surfaces forms for defining recurrence, technician assignments, and
+ * reminders. `assets/js/maintenance.js` powers the client experience, pulling
+ * schedule data from `ajax/get_maintenance.php`, fetching asset metadata, and
+ * submitting CRUD operations to `ajax/process_maintenance.php`.
+ */
 ob_start();
 require_once '../includes/session_config.php';
 session_start();

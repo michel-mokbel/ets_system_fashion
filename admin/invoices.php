@@ -1,4 +1,14 @@
 <?php
+/**
+ * Global Invoice Browser
+ * ----------------------
+ * Gives administrators access to search and review invoices generated across
+ * all stores. After establishing the hardened session and header, the page
+ * renders advanced filters and a modal-driven detail viewer coordinated by
+ * `assets/js/invoices.js`. DataTable results flow from `ajax/get_invoices.php`,
+ * while invoice detail modals consume `ajax/get_invoice.php` to display line
+ * items and payments for auditing.
+ */
 ob_start();
 require_once '../includes/session_config.php';
 session_start();

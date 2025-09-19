@@ -1,4 +1,10 @@
 <?php
+/**
+ * Fetches a single asset record for editing dialogs.
+ *
+ * Requires admin authentication, validates the provided asset ID, and returns
+ * the asset fields as JSON so the admin UI can populate the edit modal.
+ */
 require_once 'ajax_session_init.php';
 require_once '../includes/db.php';
 require_once '../includes/functions.php';

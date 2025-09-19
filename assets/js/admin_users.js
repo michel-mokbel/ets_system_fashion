@@ -1,3 +1,16 @@
+/**
+ * Admin user management controller.
+ *
+ * Responsibilities:
+ * - Fetch, filter, and render the administrator user list table with action buttons for CRUD operations.
+ * - Drive the add/edit modal by hydrating form fields from the table row and submitting to `../ajax/admin_users.php`.
+ * - Handle destructive flows such as delete and password resets with confirmation prompts and Ajax status feedback.
+ *
+ * Dependencies:
+ * - jQuery for event delegation, Ajax calls, and dynamic form manipulation.
+ * - Bootstrap modals and SweetAlert (wired in `script.js`) for modal dialogs and confirmation toasts.
+ * - `../ajax/admin_users.php` which responds to `list`, `create`, `update`, `delete`, and `reset_password` actions.
+ */
 $(document).ready(function() {
     function loadUsers() {
         const params = {

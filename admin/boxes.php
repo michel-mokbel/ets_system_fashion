@@ -1,4 +1,15 @@
 <?php
+/**
+ * Warehouse Box Management
+ * ------------------------
+ * Enables inventory administrators to review and maintain warehouse box
+ * records, including status, container linkage, and item capacity. After the
+ * shared header enforces authentication, the page renders filters, statistics,
+ * and modal-driven CRUD forms orchestrated by `assets/js/boxes.js`. All data
+ * interactions are delegated to endpoints such as `ajax/get_boxes.php` and
+ * `ajax/process_boxes.php`, while a CSRF token is embedded for the JavaScript
+ * client to include in each request.
+ */
 ob_start();
 require_once '../includes/header.php';
 

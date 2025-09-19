@@ -1,4 +1,14 @@
 <?php
+/**
+ * Barcode Generation Console
+ * --------------------------
+ * Allows inventory-privileged administrators to generate printable barcode
+ * sheets for catalog items. The page enforces authentication, loads catalog
+ * metadata for selection, and renders preview/print controls that embed
+ * responses from `admin/barcode_image.php`. Client-side interactions are
+ * handled in `assets/js/barcode-render.js`, which requests the chosen format
+ * and duplicates of the barcode for rapid label printing.
+ */
 // admin/barcode.php
 require_once __DIR__ . '/../includes/session_config.php';
 

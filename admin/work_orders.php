@@ -1,4 +1,15 @@
 <?php
+/**
+ * Work Order Coordination Center
+ * ------------------------------
+ * Bridges maintenance schedules and ad-hoc asset issues by allowing
+ * administrators to create, assign, and close work orders. The page handles
+ * optional pre-selection of assets or schedules, renders contextual metadata,
+ * and relies on `assets/js/work_orders.js` to drive the DataTable and modal
+ * flows. Data is exchanged with `ajax/get_work_orders.php`,
+ * `ajax/get_work_order.php`, and `ajax/process_work_order.php` to ensure
+ * consistent tracking of technician feedback and completion notes.
+ */
 ob_start();
 require_once '../includes/session_config.php';
 session_start();

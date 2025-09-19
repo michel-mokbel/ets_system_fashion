@@ -1,4 +1,12 @@
 <?php
+/**
+ * On-demand shift report endpoint.
+ *
+ * Produces the same summary metrics available at shift closure—sales by
+ * payment method, returns, expenses, and duration—without changing the shift
+ * state. Used by the POS to let managers review live performance before
+ * closing out.
+ */
 require_once 'ajax_session_init.php';
 require_once '../includes/db.php';
 require_once '../includes/functions.php';

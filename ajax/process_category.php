@@ -1,4 +1,10 @@
 <?php
+/**
+ * Category management endpoint.
+ *
+ * Handles add, update, and delete operations for product categories, including
+ * duplicate checks and CSRF validation, and responds with JSON status messages.
+ */
 require_once 'ajax_session_init.php';
 require_once '../includes/db.php';
 require_once '../includes/functions.php';

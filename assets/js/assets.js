@@ -1,5 +1,15 @@
 /**
- * Assets Management JavaScript
+ * Admin asset catalogue controller.
+ *
+ * Responsibilities:
+ * - Initialize the server-side DataTable for the asset list with filter propagation and CSRF protection.
+ * - Handle CRUD modal workflows (add/edit/delete) including client-side validation and SweetAlert confirmations.
+ * - Provide UX helpers such as formatted warranty status, previewing uploaded images, and resetting forms.
+ *
+ * Dependencies:
+ * - jQuery and DataTables for DOM manipulation and grid rendering.
+ * - SweetAlert for error/confirmation dialogs, Bootstrap modals for the CRUD UI, and `formatDate` helper defined at bottom of file.
+ * - Backend endpoints: `../ajax/get_assets.php` for listings and `../ajax/process_asset.php` for mutations.
  */
 
 document.addEventListener('DOMContentLoaded', function() {

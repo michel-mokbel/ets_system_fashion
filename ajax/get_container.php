@@ -1,4 +1,11 @@
 <?php
+/**
+ * Retrieves procurement container header details.
+ *
+ * Supplies the edit modal in `admin/containers.php` with supplier linkage,
+ * status, cost breakdown, and scheduling metadata. Access is limited to admin
+ * users and results are returned as JSON.
+ */
 require_once 'ajax_session_init.php';
 require_once '../includes/db.php';
 require_once '../includes/functions.php';

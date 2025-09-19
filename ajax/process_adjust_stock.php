@@ -1,4 +1,11 @@
 <?php
+/**
+ * Handles manual stock adjustment requests.
+ *
+ * Validates adjustment reasons, updates store inventory quantities, logs the
+ * movement in `inventory_transactions`, and returns JSON responses for the
+ * adjustment UI.
+ */
 require_once 'ajax_session_init.php';
 require_once '../includes/db.php';
 require_once '../includes/functions.php';

@@ -1,4 +1,11 @@
 <?php
+/**
+ * Store-to-store transfer processor.
+ *
+ * Validates source availability, activates destination assignments, adjusts
+ * inventory for both stores, and records shipment metadata before responding
+ * with JSON used by the transfer workflow.
+ */
 require_once 'ajax_session_init.php';
 require_once '../includes/db.php';
 require_once '../includes/functions.php';

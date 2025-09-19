@@ -1,4 +1,16 @@
 <?php
+/**
+ * Transfer Management Control Center
+ * ----------------------------------
+ * Coordinates warehouse and inter-store transfer workflows for authorized
+ * personnel. The page activates the hardened session, verifies that the user
+ * has transfer privileges, and renders filters plus modals for creating new
+ * transfers or reconciling shipments. Client-side logic in
+ * `assets/js/transfers.js` (and related bundles) interacts with endpoints such
+ * as `ajax/get_transfer_shipments.php`, `ajax/process_transfer_shipment.php`,
+ * and `ajax/process_store_to_store_transfer.php` to move inventory while
+ * maintaining audit trails.
+ */
 ob_start();
 require_once '../includes/session_config.php';
 session_start();

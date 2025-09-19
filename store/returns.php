@@ -1,4 +1,14 @@
 <?php
+/**
+ * Store Return Tracking
+ * ---------------------
+ * Enables store managers to audit and follow up on return requests initiated in
+ * the POS or back office. By inheriting authentication from the shared header,
+ * the page restricts visibility to the current store and renders filters plus
+ * DataTables managed by `assets/js/store_returns.js`. Data is sourced from
+ * `ajax/store_returns.php`, while deep return operations interact with
+ * `ajax/process_return.php` and related POS endpoints.
+ */
 require_once '../includes/header.php';
 if (!is_store_manager()) {
     redirect('../index.php');

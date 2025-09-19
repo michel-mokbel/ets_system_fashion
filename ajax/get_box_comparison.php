@@ -1,4 +1,11 @@
 <?php
+/**
+ * Aggregates container box quantity comparisons.
+ *
+ * Computes differences between original container counts and current warehouse
+ * stock to highlight discrepancies on the procurement analytics page. Returns
+ * summary metrics and optional debugging metadata for admins.
+ */
 require_once '../includes/session_config.php';
 
 // Start session if not already started

@@ -1,4 +1,33 @@
+/**
+ * Point-of-sale front-end controller.
+ * ----------------------------------
+ * The POS page is intentionally self-contained because it must keep working
+ * even when the rest of the admin UI fails to load. This script orchestrates
+ * barcode scanning, cart state management, and checkout submission while
+ * degrading gracefully if translations or other optional bundles are missing.
+ *
+ * Responsibilities:
+ * - Manage the item lookup pipeline (barcode scans, manual search, custom items) and enforce stock availability rules.
+ * - Maintain reactive cart state (quantities, discounts, totals) with change propagation to payment inputs and receipt preview.
+ * - Execute critical workflows such as sales submission, returns, expense logging, and shift report generation via AJAX.
+ *
+ * Dependencies:
+ * - jQuery for DOM orchestration, SweetAlert/Bootstrap modals for dialogs, and the thermal receipt print helper defined later in the file.
+ * - Backend endpoints: `../ajax/get_item_by_barcode.php`, `../ajax/search_items.php`, `../ajax/process_sale.php`, `../ajax/process_return.php`, `../ajax/process_expense.php`, and `../ajax/generate_shift_report.php`.
+ */
+
 // Simple translation function - fallback implementation
+/**
+ * Look up a translated string for a given key.
+ *
+ * The real translation bundle is loaded late in the page lifecycle, so the
+ * POS shell ships with this minimal helper to keep the UI responsive while
+ * assets are bootstrapping.
+ *
+ * @param {string} key - Translation key.
+ * @param {Object<string, string>} [params] - Optional placeholder replacements.
+ * @returns {string}
+ */
 function t(key) {
     const translations = {
         'out_of_stock': 'Out of Stock!',
@@ -46,18 +75,29 @@ $(document).ready(function () {
 	const csrfToken = $("#csrf_token").val();
     
     // Smart focus management for barcode scanning
+    /**
+     * Return focus to the barcode input.
+     *
+     * The slight timeout gives Bootstrap modals and toasts enough time to
+     * release focus before the scanner starts pushing key presses again.
+     */
     function focusBarcodeInput() {
         setTimeout(() => {
-			$("#barcodeInput").focus();
+                        $("#barcodeInput").focus();
             updateBarcodeIndicator(true);
         }, 100);
     }
-    
+
+    /**
+     * Visually indicate whether the scanner input is ready.
+     *
+     * @param {boolean} isActive
+     */
     function updateBarcodeIndicator(isActive) {
-		const input = $("#barcodeInput");
-        
+                const input = $("#barcodeInput");
+
         if (isActive) {
-			input.addClass("barcode-ready");
+                        input.addClass("barcode-ready");
         } else {
 			input.removeClass("barcode-ready");
         }
@@ -67,8 +107,15 @@ $(document).ready(function () {
     focusBarcodeInput();
 
     // Add item by barcode
+    /**
+     * Resolve a scanned barcode and add the item to the cart.
+     *
+     * This function encapsulates the AJAX call so we can reuse it when the
+     * operator enters a barcode manually or when a handheld scanner emits an
+     * `Enter` key event.
+     */
     function addItemByBarcode() {
-		const barcode = $("#barcodeInput").val().trim();
+                const barcode = $("#barcodeInput").val().trim();
         if (!barcode) return;
         $.ajax({
 			url: "../ajax/get_item_by_barcode.php",
@@ -146,6 +193,12 @@ $(document).ready(function () {
     }
 
     // Add item to cart or increment quantity
+    /**
+     * Merge the given item into the in-memory cart representation.
+     *
+     * @param {Object} item - Object returned from the lookup endpoint.
+     * @param {number} [customQuantity=1] - Quantity to apply when adding.
+     */
          function addToCart(item, customQuantity = 1) {
          // Handle custom items (they have negative IDs)
          const isCustomItem = item.item_id < 0;
@@ -196,8 +249,14 @@ $(document).ready(function () {
     }
 
     // Render cart table
+    /**
+     * Re-render the cart table and summary totals.
+     *
+     * This keeps the DOM updates encapsulated in a single place so that any
+     * future re-theming or responsive tweaks only need to touch this block.
+     */
     function renderCart() {
-		let html = "";
+                let html = "";
         let stockWarning = false;
         cart.forEach((item, idx) => {
             const isCustomItem = item.is_non_inventory || false;

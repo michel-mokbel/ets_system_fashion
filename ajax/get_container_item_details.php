@@ -1,4 +1,11 @@
 <?php
+/**
+ * Provides detailed information for a specific container item.
+ *
+ * Returns box associations, cost breakdown, and quantity metrics for display in
+ * the container management modal. Access is restricted to admins and results
+ * are formatted as JSON.
+ */
 require_once 'ajax_session_init.php';
 require_once dirname(__DIR__) . '/includes/db.php';
 require_once dirname(__DIR__) . '/includes/functions.php';

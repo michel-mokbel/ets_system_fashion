@@ -1,4 +1,10 @@
 <?php
+/**
+ * Fetches details for a single store.
+ *
+ * Used when editing store metadata in the admin interface. Validates
+ * permissions and returns the store row as JSON.
+ */
 require_once 'ajax_session_init.php';
 require_once '../includes/db.php';
 require_once '../includes/functions.php';

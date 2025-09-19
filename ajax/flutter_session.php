@@ -1,4 +1,12 @@
 <?php
+/**
+ * Mobile client session bootstrapper.
+ *
+ * Lightweight authentication endpoint tailored for the Flutter application.
+ * Validates supplied credentials, establishes a PHP session, and returns the
+ * minimal user profile alongside a CSRF token so subsequent API calls can reuse
+ * the established session context.
+ */
 require_once '../includes/session_config.php';
 require_once '../includes/db.php';
 require_once '../includes/functions.php';

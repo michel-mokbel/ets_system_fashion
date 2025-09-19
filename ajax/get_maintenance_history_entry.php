@@ -1,4 +1,10 @@
 <?php
+/**
+ * Retrieves a single maintenance history entry.
+ *
+ * Used to populate detail modals with technician notes, costs, and attachments
+ * for review or editing. Restricted to authorized maintenance personnel.
+ */
 require_once 'ajax_session_init.php';
 require_once '../includes/db.php';
 require_once '../includes/functions.php';

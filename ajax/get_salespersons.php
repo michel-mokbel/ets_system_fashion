@@ -1,4 +1,11 @@
 <?php
+/**
+ * Returns salesperson options for reporting filters.
+ *
+ * Retrieves active users assigned to the requested store so report pages can
+ * populate dropdowns. Accessible to authorized reporting roles and outputs
+ * JSON.
+ */
 require_once 'ajax_session_init.php';
 require_once '../includes/db.php';
 require_once '../includes/functions.php';

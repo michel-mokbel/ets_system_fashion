@@ -1,4 +1,16 @@
 <?php
+/**
+ * Point-of-Sale Terminal
+ * ----------------------
+ * Powers in-store sales and operational workflows for managers and sales
+ * personnel. The script enforces role-based access, locks the interface to the
+ * French locale, ensures the active store context, and seeds a CSRF token for
+ * AJAX calls. The sprawling front-end logic lives in `assets/js/pos.js`, which
+ * communicates with endpoints such as `ajax/get_item_by_barcode.php`,
+ * `ajax/process_sale.php`, `ajax/process_return.php`, and
+ * `ajax/store_expenses.php` to manage carts, payments, returns, expenses, and
+ * shift reports.
+ */
 require_once '../includes/header.php';
 if (!is_store_manager() && !is_sales_person()) {
     redirect('../index.php');
