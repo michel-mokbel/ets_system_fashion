@@ -1,4 +1,14 @@
 <?php
+/**
+ * Central Inventory & Store Assignment Manager
+ * --------------------------------------------
+ * Replaces the legacy inventory console with a combined workspace for catalog
+ * maintenance and store assignment management. The page enforces inventory-role
+ * access, embeds CSRF tokens for JavaScript submissions, and renders advanced
+ * filters plus modals orchestrated by `assets/js/store_items.js`. Listing data
+ * is retrieved from `ajax/get_inventory.php`, while item CRUD and assignment
+ * updates interact with `ajax/process_store_items.php` and related endpoints.
+ */
 ob_start();
 require_once '../includes/header.php';
 

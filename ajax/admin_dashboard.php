@@ -1,4 +1,13 @@
 <?php
+/**
+ * Admin dashboard data provider.
+ *
+ * Accepts an `action` query parameter (`stats`, `recent_sales`, `low_stock`) and
+ * returns JSON responses that populate the administrator landing page cards and
+ * tables. Each branch performs role checks, runs the relevant aggregate SQL
+ * query, and standardizes the response structure to `{ success, data }` so the
+ * front-end can render the payload without additional transformation.
+ */
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);

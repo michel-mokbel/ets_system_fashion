@@ -1,4 +1,10 @@
 <?php
+/**
+ * Retrieves a single purchase order with line items.
+ *
+ * Populates the purchase order edit modal by returning header, supplier, and
+ * item details. Restricted to administrative users.
+ */
 require_once 'ajax_session_init.php';
 require_once '../includes/db.php';
 require_once '../includes/functions.php';

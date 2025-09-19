@@ -1,4 +1,14 @@
 <?php
+/**
+ * Subcategory Administration
+ * --------------------------
+ * Complements the category manager by allowing administrators and inventory
+ * managers to define subcategory taxonomy. The page enforces authentication via
+ * the header, seeds CSRF tokens for JavaScript requests, and presents filters
+ * plus modals coordinated by `assets/js/subcategories.js`. CRUD actions are
+ * served through `ajax/process_subcategory.php`, while listings pull from
+ * `ajax/get_subcategories.php` and `ajax/get_subcategory.php`.
+ */
 require_once '../includes/header.php';
 
 if (!is_logged_in()) {

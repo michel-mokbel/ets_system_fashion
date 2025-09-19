@@ -1,5 +1,14 @@
 /**
- * Categories Management JavaScript
+ * Category administration controller.
+ *
+ * Responsibilities:
+ * - Initialize the category listing DataTable with expandable subcategory detail rows and filter propagation.
+ * - Manage the add/edit modal lifecycle, enforcing CSRF tokens, validation messages, and success toasts.
+ * - Handle deletion confirmation flow including modal prompts and server calls to `../ajax/process_category.php`.
+ *
+ * Dependencies:
+ * - jQuery, DataTables, and SweetAlert for UI interactions.
+ * - Bootstrap modals plus backend endpoints `../ajax/get_categories.php` (listing) and `../ajax/process_category.php` (mutations).
  */
 
 document.addEventListener('DOMContentLoaded', function() {

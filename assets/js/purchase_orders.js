@@ -1,5 +1,14 @@
 /**
- * Purchase Orders Management JavaScript
+ * Purchase order administration controller.
+ *
+ * Responsibilities:
+ * - Populate the PO listing DataTable with filter-aware Ajax queries and badge formatting for lifecycle status.
+ * - Drive the PO modal workflow: adding headers, managing line items dynamically, and submitting JSON payloads to the server.
+ * - Integrate supplier autocomplete, container linkage, and document export actions exposed in the UI.
+ *
+ * Dependencies:
+ * - jQuery, DataTables, SweetAlert, Bootstrap modals, and Select2/autocomplete components.
+ * - Backend endpoints: `../ajax/get_purchase_orders.php` for listing and `../ajax/process_purchase_order.php` for mutations.
  */
 
 document.addEventListener('DOMContentLoaded', function() {

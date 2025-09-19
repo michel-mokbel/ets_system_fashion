@@ -1,4 +1,11 @@
 <?php
+/**
+ * Expense submission and approval handler.
+ *
+ * Receives expense create/update/delete requests from both admin and store
+ * interfaces, manages receipt uploads, enforces permissions, and returns JSON
+ * confirmation messages.
+ */
 require_once 'ajax_session_init.php';
 require_once '../includes/db.php';
 require_once '../includes/functions.php';

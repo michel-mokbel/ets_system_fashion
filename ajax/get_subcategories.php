@@ -1,4 +1,10 @@
 <?php
+/**
+ * Returns subcategory listings with optional category filter.
+ *
+ * Powers the admin subcategory DataTable by applying parent category and search
+ * filters, enforcing permissions, and returning DataTables-compatible JSON.
+ */
 require_once 'ajax_session_init.php';
 require_once '../includes/db.php';
 require_once '../includes/functions.php';

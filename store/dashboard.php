@@ -1,4 +1,13 @@
 <?php
+/**
+ * Store Manager Dashboard
+ * -----------------------
+ * Acts as the landing page for store managers, summarizing inventory health,
+ * sales, returns, and expenses relevant to the current store. The page inherits
+ * authentication, localization, and layout from the shared header, while
+ * `assets/js/store_reports.js` and related scripts populate cards and tables via
+ * endpoints such as `ajax/store_reports.php` and `ajax/store_invoices.php`.
+ */
 require_once '../includes/header.php';
 if (!is_store_manager()) {
     redirect('../index.php');

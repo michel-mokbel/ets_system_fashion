@@ -1,4 +1,11 @@
 <?php
+/**
+ * Admin-focused store item management handler.
+ *
+ * Persists item updates originating from `admin/store_items.php`, including
+ * store assignment adjustments, localized fields, and image management. Enforces
+ * CSRF protection and returns JSON outcomes.
+ */
 require_once '../includes/session_config.php';
 
 // Start session if not already started

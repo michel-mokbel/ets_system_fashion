@@ -1,4 +1,14 @@
 <?php
+/**
+ * User Administration Portal
+ * --------------------------
+ * Restricts access to administrators responsible for onboarding and managing
+ * system accounts. The page reuses the shared header for authentication,
+ * renders filter controls, and delegates modal-driven CRUD to
+ * `assets/js/admin_users.js`. Back-end data is provided by
+ * `ajax/admin_users.php`, which handles listing, creation, updates, and
+ * password resets.
+ */
 require_once '../includes/header.php';
 if (!is_admin()) {
     redirect('../index.php');

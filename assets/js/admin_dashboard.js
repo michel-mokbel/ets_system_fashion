@@ -1,3 +1,17 @@
+/**
+ * Admin dashboard controller.
+ *
+ * Responsibilities:
+ * - Fetch top-level KPI metrics, recent sales activity, and low-stock warnings for the admin landing page.
+ * - Populate Bootstrap cards and DataTable bodies with formatted values so the PHP template only needs empty markup placeholders.
+ *
+ * Dependencies:
+ * - jQuery for DOM readiness, Ajax transport, and DOM mutations.
+ * - `../ajax/admin_dashboard.php` which accepts an `action` flag (`stats`, `recent_sales`, `low_stock`) and returns JSON payloads.
+ *
+ * Side effects:
+ * - Mutates `#stat*` counters and `<tbody>` elements in the dashboard tables once the asynchronous calls complete.
+ */
 $(document).ready(function() {
     function loadStats() {
         $.ajax({

@@ -1,4 +1,11 @@
 <?php
+/**
+ * Fetches maintenance schedule metadata.
+ *
+ * Provides recurrence rules and related asset information when creating work
+ * orders from maintenance plans. Only accessible to authorized maintenance
+ * users and returns JSON.
+ */
 require_once 'ajax_session_init.php';
 require_once '../includes/db.php';
 require_once '../includes/functions.php';

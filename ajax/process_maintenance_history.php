@@ -1,4 +1,11 @@
 <?php
+/**
+ * Maintenance history entry handler.
+ *
+ * Records or updates completed maintenance actions, including technician notes,
+ * cost tracking, and attachment handling. Requires maintenance permissions and
+ * returns JSON feedback.
+ */
 require_once 'ajax_session_init.php';
 require_once '../includes/db.php';
 require_once '../includes/functions.php';

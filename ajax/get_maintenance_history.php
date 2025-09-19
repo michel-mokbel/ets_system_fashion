@@ -1,4 +1,10 @@
 <?php
+/**
+ * Maintenance history timeline endpoint.
+ *
+ * Supplies paginated historical records per asset or schedule, enabling the UI
+ * to render maintenance timelines with technician notes and costs.
+ */
 require_once 'ajax_session_init.php';
 require_once '../includes/db.php';
 require_once '../includes/functions.php';

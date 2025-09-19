@@ -1,4 +1,15 @@
 <?php
+/**
+ * Purchase Order Management Workspace
+ * -----------------------------------
+ * Hosts the administrative interface for creating, editing, and monitoring
+ * purchase orders. After the shared session bootstrap, the page renders
+ * supplier/status/date filters, a server-side DataTable, and modal forms that
+ * capture PO headers and line items. The interactive behavior is implemented in
+ * `assets/js/purchase_orders.js`, which calls `ajax/get_purchase_orders.php`
+ * for listings, `ajax/get_purchase_order.php` for detail views, and
+ * `ajax/process_purchase_order.php` to persist changes.
+ */
 ob_start();
 require_once '../includes/session_config.php';
 session_start();

@@ -1,4 +1,10 @@
 <?php
+/**
+ * Provides detailed transfer shipment information including boxes and items.
+ *
+ * Supports deep inspection modals by returning shipment metadata alongside
+ * nested box and item arrays. Requires transfer management privileges.
+ */
 require_once 'ajax_session_init.php';
 require_once '../includes/db.php';
 require_once '../includes/functions.php';

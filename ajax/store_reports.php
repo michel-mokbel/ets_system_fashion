@@ -1,4 +1,10 @@
 <?php
+/**
+ * Store reporting data provider.
+ *
+ * Aggregates sales, inventory, and expense statistics for the current store
+ * over optional date ranges, returning JSON consumed by the store reports UI.
+ */
 require_once 'ajax_session_init.php';
 require_once '../includes/db.php';
 require_once '../includes/functions.php';

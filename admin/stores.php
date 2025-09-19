@@ -1,4 +1,14 @@
 <?php
+/**
+ * Store Directory Administration
+ * ------------------------------
+ * Provides administrators with CRUD controls for store metadata, including
+ * address details, phone contacts, and manager assignments. Authentication and
+ * CSRF protection are bootstrapped via the shared header, while
+ * `assets/js/stores.js` manages the DataTable, modal lifecycle, and AJAX
+ * submissions to `ajax/get_stores.php`, `ajax/get_store.php`, and
+ * `ajax/process_store.php`.
+ */
 require_once '../includes/header.php';
 
 if (!is_admin()) {

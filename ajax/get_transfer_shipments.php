@@ -1,4 +1,11 @@
 <?php
+/**
+ * Lists transfer shipments for the transfer management dashboard.
+ *
+ * Returns shipment metadata, statuses, and related store information with
+ * pagination support. Restricted to users with transfer permissions and
+ * responses are DataTables-compatible JSON.
+ */
 require_once 'ajax_session_init.php';
 require_once '../includes/db.php';
 require_once '../includes/functions.php';

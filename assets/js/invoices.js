@@ -1,3 +1,15 @@
+/**
+ * Admin invoice browser controller.
+ *
+ * Responsibilities:
+ * - Initialize the invoices DataTable, propagate filter form values, and render payment status badges.
+ * - Bind filter submissions and row action buttons (view/export) to the appropriate AJAX endpoints and modals.
+ * - Display SweetAlert error messaging when the API returns failures so administrators receive immediate feedback.
+ *
+ * Dependencies:
+ * - jQuery, DataTables, SweetAlert, and Bootstrap modals.
+ * - Backend endpoints: `../ajax/get_invoices.php` for listing and `../ajax/get_invoice.php` for the modal detail fetch triggered further down in the script.
+ */
 $(document).ready(function() {
     if (window.invoicesTableInitialized) {
         // Already initialized, do nothing

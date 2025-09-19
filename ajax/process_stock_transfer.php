@@ -1,4 +1,11 @@
 <?php
+/**
+ * Generic stock transfer processor.
+ *
+ * Executes warehouse-to-store and store-to-store transfers by validating stock
+ * levels, adjusting inventory, creating shipment records, and returning JSON
+ * responses for the transfer UIs.
+ */
 require_once 'ajax_session_init.php';
 require_once '../includes/db.php';
 require_once '../includes/functions.php';

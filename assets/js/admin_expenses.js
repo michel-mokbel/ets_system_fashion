@@ -1,3 +1,16 @@
+/**
+ * Admin expenses management UI controller.
+ *
+ * Responsibilities:
+ * - Drive the admin expenses DataTable by querying `../ajax/process_expense.php` with read-only filters.
+ * - Handle add/edit modal lifecycle including file upload previews, default values, and POST submission to the same endpoint.
+ * - Provide inline approval/rejection controls for pending expenses so administrators can moderate spending.
+ *
+ * Dependencies:
+ * - jQuery for event binding, Ajax requests, and DOM manipulation.
+ * - Bootstrap modals for the add/edit dialog and toasts supplied elsewhere in the layout for success feedback.
+ * - `../ajax/process_expense.php` which supports `action=list|add|edit|approve|reject` payloads and returns JSON responses.
+ */
 $(document).ready(function() {
     function loadAdminExpenses() {
         const params = {

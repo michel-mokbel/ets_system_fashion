@@ -1,4 +1,10 @@
 <?php
+/**
+ * Maintenance schedule listing endpoint.
+ *
+ * Returns upcoming and overdue maintenance tasks with recurrence data for the
+ * admin maintenance module, applying search filters and enforcing permissions.
+ */
 require_once 'ajax_session_init.php';
 require_once '../includes/db.php';
 require_once '../includes/functions.php';

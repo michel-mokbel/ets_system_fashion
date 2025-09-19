@@ -1,4 +1,15 @@
 <?php
+/**
+ * Store Inventory Oversight
+ * ------------------------
+ * Allows admins, inventory managers, and authorized store managers to review
+ * per-store stock levels, adjust assignments, and inspect item health metrics.
+ * The page enforces role-based access, determines the default store scope, and
+ * renders cards plus DataTables powered by `assets/js/store_items.js` and
+ * related scripts. Data is sourced from endpoints like
+ * `ajax/get_store_inventory_enhanced.php` and actions route to
+ * `ajax/process_store_inventory.php` for adjustments.
+ */
 ob_start();
 require_once '../includes/session_config.php';
 session_start();

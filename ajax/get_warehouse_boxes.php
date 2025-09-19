@@ -1,4 +1,10 @@
 <?php
+/**
+ * Warehouse box listing endpoint.
+ *
+ * Returns boxes filtered by type or container for reuse across warehouse and
+ * transfer workflows. Enforces warehouse/admin permissions and outputs JSON.
+ */
 require_once '../includes/session_config.php';
 
 // Start session if not already started

@@ -1,4 +1,15 @@
 <?php
+/**
+ * Legacy Inventory Management Console
+ * -----------------------------------
+ * Provides the classic inventory grid used by administrators and inventory
+ * managers to inspect catalog items, trigger incoming stock workflows, and
+ * launch transfer modals. While largely superseded by `admin/store_items.php`,
+ * the page still wires up the shared header for authentication, exposes
+ * DataTable filters, and delegates client-side orchestration to
+ * `assets/js/inventory.js` together with endpoints like
+ * `ajax/get_inventory.php` and `ajax/process_inventory.php`.
+ */
 ob_start();
 require_once '../includes/header.php';
 

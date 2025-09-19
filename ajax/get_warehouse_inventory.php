@@ -1,4 +1,10 @@
 <?php
+/**
+ * Aggregates warehouse inventory metrics.
+ *
+ * Summarizes loose items and boxed quantities to support warehouse dashboards
+ * and analytics. Restricted to warehouse-capable roles with JSON responses.
+ */
 require_once 'ajax_session_init.php';
 require_once '../includes/db.php';
 require_once '../includes/functions.php';

@@ -1,4 +1,16 @@
 <?php
+/**
+ * Container Lifecycle Management
+ * ------------------------------
+ * Centralizes procurement container workflows for administrators. The page
+ * bootstraps session security, restricts access to the admin role, and renders
+ * advanced filters plus modal-driven forms for creating, editing, and
+ * processing container shipments. JavaScript coordination lives in
+ * `assets/js/containers.js`, which consumes endpoints like
+ * `ajax/get_containers.php`, `ajax/get_container.php`, and
+ * `ajax/process_container.php` to manage nested cost breakdowns, item imports,
+ * analytics, and status transitions.
+ */
 ob_start();
 require_once '../includes/session_config.php';
 session_start();

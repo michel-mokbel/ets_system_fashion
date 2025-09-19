@@ -1,5 +1,14 @@
 /**
- * Maintenance History Management JavaScript
+ * Maintenance history log controller.
+ *
+ * Responsibilities:
+ * - Render completed maintenance entries with filterable DataTable columns and contextual status badges.
+ * - Power the add/edit modal for logging technician notes, completion evidence, and file attachments.
+ * - Handle delete confirmations and refresh the grid after any mutation so audit trails remain current.
+ *
+ * Dependencies:
+ * - jQuery, DataTables (responsive), SweetAlert, Bootstrap modals, and datepicker widgets used within the modal forms.
+ * - Backend endpoints `../ajax/get_maintenance_history.php` (list) and `../ajax/process_maintenance_history.php` (CRUD).
  */
 
 document.addEventListener('DOMContentLoaded', function() {

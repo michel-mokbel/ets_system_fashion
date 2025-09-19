@@ -1,4 +1,10 @@
 <?php
+/**
+ * Returns the full detail of a single invoice.
+ *
+ * Includes header, line items, payments, and metadata for display in admin and
+ * store invoice modals. Validates access permissions and responds with JSON.
+ */
 require_once 'ajax_session_init.php';
 require_once '../includes/db.php';
 require_once '../includes/functions.php';

@@ -1,4 +1,11 @@
 <?php
+/**
+ * Purchase order DataTable endpoint.
+ *
+ * Supports filtering by supplier, status, and date while returning paginated
+ * results for the procurement module. Ensures the caller is an administrator
+ * before outputting DataTables JSON.
+ */
 require_once 'ajax_session_init.php';
 require_once '../includes/db.php';
 require_once '../includes/functions.php';

@@ -1,3 +1,15 @@
+/**
+ * Store invoice list controller.
+ *
+ * Responsibilities:
+ * - Query `../ajax/store_invoices.php` for invoice summaries scoped to the current store and active filters.
+ * - Render payment status badges and action buttons for view/print features.
+ * - Refresh the table when filters change without requiring a full page reload.
+ *
+ * Dependencies:
+ * - jQuery for DOM handling; Bootstrap badge styling for status indicators.
+ * - Backend endpoint `../ajax/store_invoices.php`.
+ */
 $(document).ready(function() {
     function loadInvoices() {
         const params = {

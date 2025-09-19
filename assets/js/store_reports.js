@@ -1,3 +1,15 @@
+/**
+ * Store reporting dashboard controller.
+ *
+ * Responsibilities:
+ * - Load sales, inventory, invoice, expense, and return summaries via `../ajax/store_reports.php` for the active store.
+ * - Render the returned datasets into Bootstrap tables/charts placeholders and handle empty/error messaging.
+ * - React to filter submissions (date ranges, payment types) to refresh the respective report sections.
+ *
+ * Dependencies:
+ * - jQuery for AJAX + DOM updates; Chart.js (where charts are rendered later in the file) for visualizations.
+ * - Backend endpoint `../ajax/store_reports.php` with `action` switches.
+ */
 $(document).ready(function() {
     // --- Sales Report ---
     function loadSalesReport() {

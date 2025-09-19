@@ -1,4 +1,11 @@
 <?php
+/**
+ * Work order lifecycle handler.
+ *
+ * Supports creation, updates, and closure of work orders, managing technician
+ * feedback, scheduling data, and status transitions before responding with JSON
+ * messages.
+ */
 require_once 'ajax_session_init.php';
 require_once '../includes/db.php';
 require_once '../includes/functions.php';

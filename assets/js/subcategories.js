@@ -1,5 +1,14 @@
 /**
- * Subcategories Management JavaScript
+ * Subcategory administration controller.
+ *
+ * Responsibilities:
+ * - Initialize the subcategory DataTable with parent-category filters and item counts.
+ * - Manage add/edit modals, cascading category dropdowns, and delete confirmations via SweetAlert.
+ * - Call `../ajax/process_subcategory.php` to persist changes and reload the grid on success.
+ *
+ * Dependencies:
+ * - jQuery, DataTables, SweetAlert, Bootstrap modals.
+ * - Backend endpoints `../ajax/get_subcategories.php` and `../ajax/process_subcategory.php`.
  */
 
 document.addEventListener('DOMContentLoaded', function() {

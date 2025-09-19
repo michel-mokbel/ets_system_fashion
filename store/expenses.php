@@ -1,4 +1,14 @@
 <?php
+/**
+ * Store Expense Entry & Tracking
+ * ------------------------------
+ * Allows store managers to submit operating expenses, attach receipts, and
+ * monitor approval status without accessing the admin console. Authentication
+ * and localization are inherited from the shared header, while the interactive
+ * form and listing are orchestrated by `assets/js/store_expenses.js` calling
+ * `ajax/store_expenses.php` for listings and `ajax/process_expense.php` for
+ * submissions.
+ */
 require_once '../includes/header.php';
 if (!is_store_manager()) {
     redirect('../index.php');

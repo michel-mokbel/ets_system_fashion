@@ -1,4 +1,13 @@
 <?php
+/**
+ * Shared bootstrap for AJAX endpoints.
+ *
+ * Configures strict error reporting, loads session hardening defaults,
+ * initializes translation utilities when needed, and ensures every endpoint
+ * responds with JSON by default. Including files rely on this bootstrap before
+ * running any business logic to guarantee consistent authentication and locale
+ * handling.
+ */
 // Turn off error reporting to prevent HTML output
 error_reporting(0);
 ini_set('display_errors', 0);

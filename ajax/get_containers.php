@@ -1,4 +1,11 @@
 <?php
+/**
+ * Server-side listing for procurement containers.
+ *
+ * Applies supplier, status, and date filters; composes statistics; and returns
+ * DataTables-compatible JSON used by `admin/containers.php`. Restricted to
+ * administrative roles.
+ */
 require_once 'ajax_session_init.php';
 require_once '../includes/db.php';
 require_once '../includes/functions.php';

@@ -1,4 +1,12 @@
 <?php
+/**
+ * Transfer deletion handler.
+ *
+ * Reverses a previously recorded transfer shipment by restoring source
+ * inventory, decrementing destination stock, and cleaning up transfer-related
+ * records. Guarded for admin/warehouse roles and wraps operations in
+ * transactions to maintain stock integrity.
+ */
 require_once 'ajax_session_init.php';
 require_once '../includes/db.php';
 require_once '../includes/functions.php';

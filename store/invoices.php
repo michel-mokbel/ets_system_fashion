@@ -1,4 +1,13 @@
 <?php
+/**
+ * Store-Level Invoice Browser
+ * ---------------------------
+ * Lets store managers audit the invoices generated within their location,
+ * including statuses, payments, and return activity. The page reuses the shared
+ * header to enforce authentication, renders date/status filters, and leverages
+ * `assets/js/store_invoices.js` to load data from `ajax/store_invoices.php` and
+ * fetch detailed invoice breakdowns for modal display.
+ */
 require_once '../includes/header.php';
 if (!is_store_manager()) {
     redirect('../index.php');

@@ -1,4 +1,15 @@
 <?php
+/**
+ * Asset Management Dashboard
+ * --------------------------
+ * Presents a searchable, filterable view of non-inventory assets for
+ * administrators. The page loads the shared header to enforce session and
+ * translation handling, verifies access, and then renders a Bootstrap grid
+ * backed by the server-side DataTable implemented in
+ * `assets/js/assets.js`. CRUD submissions are routed to
+ * `ajax/process_asset.php`, while the initial table data and edit modals read
+ * from `ajax/get_assets.php`/`ajax/get_asset.php` to keep the UI reactive.
+ */
 ob_start();
 require_once '../includes/session_config.php';
 session_start();

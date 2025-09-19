@@ -1,4 +1,11 @@
 <?php
+/**
+ * Inventory item CRUD endpoint.
+ *
+ * Handles creation, updates, and deletion of catalog items, including image
+ * uploads, barcode generation flags, and container linking. Enforces CSRF
+ * protection and returns JSON status messages.
+ */
 require_once 'ajax_session_init.php';
 require_once '../includes/db.php';
 require_once '../includes/functions.php';

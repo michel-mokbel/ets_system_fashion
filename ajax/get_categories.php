@@ -1,4 +1,11 @@
 <?php
+/**
+ * Retrieves category listings for admin filters and dropdowns.
+ *
+ * Supports DataTable pagination and search, scopes results to active categories
+ * by default, and restricts access to authenticated admins before returning the
+ * JSON payload.
+ */
 require_once 'ajax_session_init.php';
 require_once '../includes/db.php';
 require_once '../includes/functions.php';

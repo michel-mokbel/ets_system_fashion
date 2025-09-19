@@ -1,5 +1,14 @@
 /**
- * Maintenance Management JavaScript
+ * Preventive maintenance scheduler controller.
+ *
+ * Responsibilities:
+ * - Populate the maintenance schedule DataTable with filter parameters, CSRF tokens, and status badges highlighting overdue work.
+ * - Manage the add/edit schedule modal, including recurrence dropdowns, asset autocomplete wiring, and server submissions.
+ * - Coordinate follow-up actions such as generating work orders directly from a schedule row.
+ *
+ * Dependencies:
+ * - jQuery, DataTables, SweetAlert, Bootstrap modals, and Select2/autocomplete widgets referenced later in the file.
+ * - Backend endpoints: `../ajax/get_maintenance.php` (listing) and `../ajax/process_maintenance.php` (mutations).
  */
 
 document.addEventListener('DOMContentLoaded', function() {

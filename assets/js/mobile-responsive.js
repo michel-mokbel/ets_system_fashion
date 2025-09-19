@@ -1,6 +1,14 @@
 /**
- * Mobile Responsive JavaScript Enhancements for ETS System
- * Handles responsive behavior, table-to-card conversion, and mobile optimizations
+ * Responsive behaviour orchestrator.
+ *
+ * Responsibilities:
+ * - Detect viewport breakpoints/orientation changes and toggle between desktop tables and mobile-friendly card renderings.
+ * - Inject touch optimizations (larger hit targets, swipe helpers), step navigation, and collapsible sections for constrained screens.
+ * - Provide helper routines that other modules call to keep DataTables and card views synchronized during redraws.
+ *
+ * Dependencies:
+ * - jQuery for DOM traversal/manipulation and DataTables instances passed in from other scripts.
+ * - Bootstrap classes for responsive styling; no backend interaction.
  */
 
 class MobileResponsive {

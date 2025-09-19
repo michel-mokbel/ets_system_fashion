@@ -1,4 +1,15 @@
 <?php
+/**
+ * Maintenance History Viewer
+ * --------------------------
+ * Surfaces historical maintenance records for assets and schedules, enabling
+ * administrators to audit completed tasks, technician notes, and costs. The
+ * page can be pre-filtered via query parameters, retrieves associated names for
+ * context, and renders an interactive timeline via `assets/js/maintenance_history.js`.
+ * History entries are loaded from `ajax/get_maintenance_history.php`, while
+ * follow-up updates leverage `ajax/process_maintenance_history.php` for
+ * consistency with the scheduler module.
+ */
 ob_start();
 require_once '../includes/session_config.php';
 session_start();

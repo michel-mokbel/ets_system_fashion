@@ -1,4 +1,11 @@
 <?php
+/**
+ * Warehouse boxes DataTable provider.
+ *
+ * Delivers paginated, filterable box listings—including stats and dropdown
+ * options—for the warehouse management UI. Enforces admin/warehouse access and
+ * merges search filters with DataTables parameters before returning JSON.
+ */
 require_once '../includes/session_config.php';
 
 // Start session if not already started

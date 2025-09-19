@@ -1,4 +1,10 @@
 <?php
+/**
+ * Supplier listing endpoint.
+ *
+ * Serves DataTables requests from the supplier management UI, supporting search
+ * and status filters while restricting access to administrators.
+ */
 require_once 'ajax_session_init.php';
 require_once '../includes/db.php';
 require_once '../includes/functions.php';

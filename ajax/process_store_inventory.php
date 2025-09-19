@@ -1,4 +1,11 @@
 <?php
+/**
+ * Store inventory adjustment handler.
+ *
+ * Applies manual stock changes at the store level, updates barcode assignments
+ * and minimum stock thresholds, and logs adjustments before returning JSON
+ * responses.
+ */
 require_once 'ajax_session_init.php';
 require_once '../includes/db.php';
 require_once '../includes/functions.php';

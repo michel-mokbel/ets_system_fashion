@@ -1,4 +1,14 @@
 <?php
+/**
+ * Store Reporting Suite
+ * ---------------------
+ * Provides store managers with curated reports on sales, inventory, invoices,
+ * and expenses without requiring admin access. After leveraging the shared
+ * header for authentication, the page exposes tabbed report layouts that are
+ * populated via `assets/js/store_reports.js` calling
+ * `ajax/store_reports.php`, `ajax/store_invoices.php`, and
+ * `ajax/store_expenses.php` depending on the active tab.
+ */
 require_once '../includes/header.php';
 if (!is_store_manager()) {
     redirect('../index.php');

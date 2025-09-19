@@ -1,4 +1,11 @@
 <?php
+/**
+ * Retrieves a single work order.
+ *
+ * Returns status, asset linkage, scheduling, and technician notes for editing
+ * or inspection within the work order module. Access is limited to maintenance
+ * roles.
+ */
 require_once 'ajax_session_init.php';
 require_once '../includes/db.php';
 require_once '../includes/functions.php';

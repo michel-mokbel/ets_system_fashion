@@ -1,5 +1,14 @@
 /**
- * Inventory Management JavaScript
+ * Admin inventory catalogue controller.
+ *
+ * Responsibilities:
+ * - Bootstrap the inventory DataTable with advanced filters, CSRF protection, and expandable detail rows for store assignments.
+ * - Drive add/edit/manage-store modal interactions, including barcode generation preview and status toggles.
+ * - Coordinate with the server to refresh statistics, handle import workflows, and sync the mobile card view produced by `mobile-responsive.js`.
+ *
+ * Dependencies:
+ * - jQuery, DataTables (responsive extension), SweetAlert, Bootstrap modals, and Select2 for dropdowns where applicable.
+ * - Backend endpoints: `../ajax/get_inventory.php` for listing, `../ajax/process_inventory.php` for CRUD, plus helper endpoints for store assignments and containers referenced deeper in the file.
  */
 
 document.addEventListener('DOMContentLoaded', function() {

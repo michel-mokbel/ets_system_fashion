@@ -1,4 +1,14 @@
 <?php
+/**
+ * Supplier Relationship Management
+ * --------------------------------
+ * Provides the administrative interface for maintaining supplier records,
+ * including contact details, status flags, and notes that feed procurement
+ * workflows. After authentication via the shared header, the page renders a
+ * filterable DataTable and modals driven by `assets/js/suppliers.js`, which in
+ * turn communicate with `ajax/get_suppliers.php`, `ajax/get_supplier.php`, and
+ * `ajax/process_supplier.php` for CRUD operations.
+ */
 ob_start();
 require_once '../includes/session_config.php';
 session_start();

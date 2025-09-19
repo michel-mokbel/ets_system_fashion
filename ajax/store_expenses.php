@@ -1,4 +1,10 @@
 <?php
+/**
+ * Store expense listing endpoint.
+ *
+ * Returns DataTables-formatted expense records for the current store with date
+ * and status filters, enabling store managers to review submissions.
+ */
 require_once 'ajax_session_init.php';
 require_once '../includes/db.php';
 require_once '../includes/functions.php';

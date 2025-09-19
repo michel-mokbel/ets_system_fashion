@@ -1,4 +1,10 @@
 <?php
+/**
+ * POS secondary authorization check.
+ *
+ * Validates a manager’s password to approve sensitive POS actions initiated by
+ * salespersons. Returns JSON flags indicating whether the action may proceed.
+ */
 require_once 'ajax_session_init.php';
 require_once '../includes/db.php';
 require_once '../includes/functions.php';

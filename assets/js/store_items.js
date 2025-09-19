@@ -1,5 +1,14 @@
 /**
- * Store Items Management JavaScript (Inventory + Store Assignments)
+ * Store assignment management client.
+ *
+ * Responsibilities:
+ * - Provide modals for assigning inventory items to stores, including bulk assignment flows and search/filter utilities.
+ * - Synchronize selected item state with the main inventory DataTable (initialized in `inventory.js`).
+ * - Coordinate AJAX calls to `../ajax/process_store_items.php` to fetch assignments, persist changes, and report errors.
+ *
+ * Dependencies:
+ * - jQuery (for some selectors), Fetch API, Bootstrap modals, SweetAlert for error messaging, and global helpers like `showToast`.
+ * - Backend endpoint `../ajax/process_store_items.php` with actions such as `get_store_assignments`, `save_assignment`, and bulk variants.
  */
 
 document.addEventListener('DOMContentLoaded', function() {

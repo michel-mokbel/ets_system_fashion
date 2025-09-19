@@ -1,4 +1,11 @@
 <?php
+/**
+ * Lightweight database health check.
+ *
+ * Attempts to connect to MySQL using the shared connection helper and returns
+ * a JSON status payload. Designed for uptime monitors or installer scripts to
+ * verify connectivity without requiring authentication.
+ */
 header('Content-Type: application/json');
 
 // Include database connection

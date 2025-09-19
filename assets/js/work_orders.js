@@ -1,5 +1,14 @@
 /**
- * Work Orders Management JavaScript
+ * Maintenance work order controller.
+ *
+ * Responsibilities:
+ * - Render the work order queue with server-side filtering and badge styling for priority/status.
+ * - Manage modals for creating, updating, and closing work orders, including technician assignments and attachment uploads.
+ * - Communicate with `../ajax/process_work_order.php` for persistence and refresh the DataTable after changes.
+ *
+ * Dependencies:
+ * - jQuery, DataTables, SweetAlert, Bootstrap modals, and flatpickr for scheduling fields.
+ * - Backend endpoints: `../ajax/get_work_orders.php`, `../ajax/get_work_order.php`, and `../ajax/process_work_order.php`.
  */
 
 document.addEventListener('DOMContentLoaded', function() {

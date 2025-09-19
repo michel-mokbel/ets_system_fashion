@@ -1,4 +1,10 @@
 <?php
+/**
+ * Supplies eligible destination store items for transfers.
+ *
+ * Ensures the requested items exist and are assignable at the destination
+ * store, returning results as JSON for the transfer creation modal.
+ */
 require_once '../includes/session_config.php';
 
 // Start session if not already started

@@ -1,4 +1,11 @@
 <?php
+/**
+ * Procurement container workflow engine.
+ *
+ * Processes container creation, updates, and status transitions, persists
+ * nested cost and item payloads, and calculates financial summaries. Restricted
+ * to admins and protected by CSRF validation, responding with JSON outcomes.
+ */
 // Turn off error reporting to prevent HTML output
 error_reporting(0);
 ini_set('display_errors', 0);

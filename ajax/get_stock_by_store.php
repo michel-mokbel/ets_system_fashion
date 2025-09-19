@@ -1,4 +1,10 @@
 <?php
+/**
+ * Aggregates stock quantities per store.
+ *
+ * Supports dashboard widgets and analytics by returning total stock counts for
+ * each store. Restricted to admins and warehouse roles.
+ */
 require_once 'ajax_session_init.php';
 require_once '../includes/db.php';
 require_once '../includes/functions.php';

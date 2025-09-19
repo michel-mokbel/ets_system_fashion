@@ -1,4 +1,11 @@
 <?php
+/**
+ * Invoice DataTable endpoint.
+ *
+ * Supplies paginated invoice listings with optional store, status, and date
+ * filters. Supports both admin and store contexts while enforcing appropriate
+ * access control and outputting DataTables JSON.
+ */
 require_once 'ajax_session_init.php';
 require_once '../includes/db.php';
 require_once '../includes/functions.php';

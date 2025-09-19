@@ -1,4 +1,10 @@
 <?php
+/**
+ * POS item search endpoint.
+ *
+ * Provides text-based lookup across item codes and names scoped to the current
+ * store, returning match data for the POS quick search modal.
+ */
 require_once 'ajax_session_init.php';
 require_once '../includes/db.php';
 require_once '../includes/functions.php';

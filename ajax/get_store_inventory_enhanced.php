@@ -1,4 +1,10 @@
 <?php
+/**
+ * Enhanced store inventory listing.
+ *
+ * Extends the base store inventory feed with additional computed columns for
+ * admin adjustments, feeding the `admin/store_inventory.php` interface.
+ */
 require_once 'ajax_session_init.php';
 require_once '../includes/db.php';
 require_once '../includes/functions.php';
