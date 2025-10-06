@@ -98,7 +98,7 @@ $user_name =$_SESSION['username']??'User';
                 $system_pages = ['stores.php', 'users.php'];
                 ?>
 
-                <?php if (is_admin()): ?>
+                <?php if (is_admin() || is_view_only()): ?>
                     <!-- Dashboard - Standalone -->
                     <li>
                         <a href="<?php echo $base_url; ?>admin/dashboard.php" class="<?php echo $current_page == 'dashboard.php' ? 'active' : ''; ?>">
@@ -158,7 +158,7 @@ $user_name =$_SESSION['username']??'User';
                             </ul>
                         </div>
                     </li>
-
+                    <?php if (is_admin() || is_inventory_manager()): ?>
                     <!-- Procurement Group -->
                     <li class="menu-group">
                         <a href="#procurementGroup" class="menu-group-toggle <?php echo in_array($current_page, $procurement_pages) ? 'expanded' : ''; ?>" data-bs-toggle="collapse" aria-expanded="<?php echo in_array($current_page, $procurement_pages) ? 'true' : 'false'; ?>">
@@ -168,12 +168,14 @@ $user_name =$_SESSION['username']??'User';
                         </a>
                         <div class="collapse <?php echo in_array($current_page, $procurement_pages) ? 'show' : ''; ?>" id="procurementGroup">
                             <ul class="submenu">
+                                
                                 <li>
                                     <a href="<?php echo $base_url; ?>admin/containers.php" class="<?php echo $current_page == 'containers.php' ? 'active' : ''; ?>">
                                         <i class="bi bi-box"></i>
                                         <span><?php echo getTranslation('menu.containers'); ?></span>
                                     </a>
                                 </li>
+                                
                                 <li>
                                     <a href="<?php echo $base_url; ?>admin/purchase_orders.php" class="<?php echo $current_page == 'purchase_orders.php' ? 'active' : ''; ?>">
                                         <i class="bi bi-cart"></i>
@@ -189,7 +191,8 @@ $user_name =$_SESSION['username']??'User';
                             </ul>
                         </div>
                     </li>
-
+                    <?php endif; ?>
+                    <?php if (is_admin()): ?>
                     <!-- Sales & Operations Group -->
                     <li class="menu-group">
                         <a href="#salesGroup" class="menu-group-toggle <?php echo in_array($current_page, $sales_pages) ? 'expanded' : ''; ?>" data-bs-toggle="collapse" aria-expanded="<?php echo in_array($current_page, $sales_pages) ? 'true' : 'false'; ?>">
@@ -214,7 +217,8 @@ $user_name =$_SESSION['username']??'User';
                             </ul>
                         </div>
                     </li>
-
+                    <?php endif; ?>
+                    
                     <!-- Catalog Management Group -->
                     <li class="menu-group">
                         <a href="#catalogGroup" class="menu-group-toggle <?php echo in_array($current_page, $catalog_pages) ? 'expanded' : ''; ?>" data-bs-toggle="collapse" aria-expanded="<?php echo in_array($current_page, $catalog_pages) ? 'true' : 'false'; ?>">
@@ -239,6 +243,7 @@ $user_name =$_SESSION['username']??'User';
                             </ul>
                         </div>
                     </li>
+                   
 
                     <!-- Reports - Standalone -->
                     <li>
@@ -249,6 +254,7 @@ $user_name =$_SESSION['username']??'User';
                     </li>
 
                     <!-- System Management Group -->
+                    <?php if (is_admin()): ?>
                     <li class="menu-group">
                         <a href="#systemGroup" class="menu-group-toggle <?php echo in_array($current_page, $system_pages) ? 'expanded' : ''; ?>" data-bs-toggle="collapse" aria-expanded="<?php echo in_array($current_page, $system_pages) ? 'true' : 'false'; ?>">
                             <i class="bi bi-gear"></i>
@@ -272,7 +278,7 @@ $user_name =$_SESSION['username']??'User';
                             </ul>
                         </div>
                     </li>
-
+                    <?php endif; ?>
                 <?php elseif (is_inventory_manager()): ?>
                     <!-- Inventory Management for Inventory Manager -->
                     <li class="menu-group">

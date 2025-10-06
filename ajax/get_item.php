@@ -59,7 +59,8 @@ try {
                 sc.name as subcategory_name,
                 cont.container_number,
                 GROUP_CONCAT(DISTINCT CONCAT(s.name, ':', COALESCE(si.current_stock, 0), ':', COALESCE(si.minimum_stock, 0), ':', COALESCE(si.selling_price, i.base_price), ':', COALESCE(si.cost_price, 0), ':', COALESCE(si.location_in_store, '')) SEPARATOR '|') as store_inventory,
-                GROUP_CONCAT(DISTINCT b.barcode SEPARATOR ',') as barcodes
+                GROUP_CONCAT(DISTINCT b.barcode SEPARATOR ',') as barcodes,
+                GROUP_CONCAT(DISTINCT CONCAT(wp.store_id, ':', wp.weekday, ':', wp.price) SEPARATOR '|') as weekly_prices
               FROM inventory_items i
               LEFT JOIN categories c ON i.category_id = c.id
               LEFT JOIN subcategories sc ON i.subcategory_id = sc.id
@@ -67,6 +68,7 @@ try {
               LEFT JOIN store_inventory si ON i.id = si.item_id" . $store_filter . "
               LEFT JOIN stores s ON si.store_id = s.id
               LEFT JOIN barcodes b ON i.id = b.item_id
+              LEFT JOIN item_weekly_prices wp ON i.id = wp.item_id
               WHERE i.id = ?
               GROUP BY i.id";
 
@@ -117,6 +119,30 @@ try {
             $barcodes = explode(',', $item['barcodes']);
         }
         $item['barcodes_list'] = $barcodes;
+        
+        // Parse weekly prices data
+        $weekly_prices = [];
+        $weekly_store_id = null;
+        if (!empty($item['weekly_prices'])) {
+            $prices = explode('|', $item['weekly_prices']);
+            foreach ($prices as $price_data) {
+                if (!empty($price_data)) {
+                    $parts = explode(':', $price_data);
+                    if (count($parts) >= 3) {
+                        $store_id = (int)$parts[0];
+                        $weekday = (int)$parts[1];
+                        $price = (float)$parts[2];
+                        $weekly_prices[$weekday] = $price;
+                        if ($weekly_store_id === null) {
+                            $weekly_store_id = $store_id;
+                        }
+                    }
+                }
+            }
+        }
+        $item['weekly_prices'] = $weekly_prices;
+        $item['weekly_store_id'] = $weekly_store_id;
+        $item['has_weekly_pricing'] = !empty($weekly_prices);
         
         // Calculate total stock across all stores
         $total_stock = 0;

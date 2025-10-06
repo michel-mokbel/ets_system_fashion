@@ -27,6 +27,7 @@ if (!can_access_transfers()) {
 // Get parameters
 $search = $_GET['search'] ?? $_POST['search'] ?? '';
 $type_filter = $_GET['type'] ?? $_POST['type'] ?? '';
+$container_filter = $_GET['container_id'] ?? $_POST['container_id'] ?? '';
 
 // Base query
 $base_query = "FROM warehouse_boxes wb
@@ -50,6 +51,13 @@ if (!empty($type_filter)) {
     $where_conditions[] = "wb.box_type = ?";
     $params[] = $type_filter;
     $types .= 's';
+}
+
+// Container filter
+if (!empty($container_filter)) {
+    $where_conditions[] = "wb.container_id = ?";
+    $params[] = (int)$container_filter;
+    $types .= 'i';
 }
 
 $where_clause = '';
@@ -106,10 +114,28 @@ while ($type_row = $types_result->fetch_assoc()) {
     $box_types[] = $type_row['box_type'];
 }
 
+// Get distinct containers for filter
+$containers_query = "SELECT DISTINCT c.id, c.container_number
+                     FROM warehouse_boxes wb
+                     LEFT JOIN containers c ON wb.container_id = c.id
+                     WHERE c.id IS NOT NULL
+                     ORDER BY c.container_number";
+$containers_result = $conn->query($containers_query);
+$containers = [];
+if ($containers_result) {
+    while ($c_row = $containers_result->fetch_assoc()) {
+        $containers[] = [
+            'id' => (int)$c_row['id'],
+            'container_number' => $c_row['container_number']
+        ];
+    }
+}
+
 echo json_encode([
     'success' => true,
     'boxes' => $boxes,
     'box_types' => $box_types,
+    'containers' => $containers,
     'total_count' => count($boxes)
 ]);
 ?> 

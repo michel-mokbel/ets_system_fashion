@@ -79,6 +79,9 @@ if (!empty($search)) {
 
 $where_clause = implode(' AND ', $where_conditions);
 
+// Determine weekday: 0 (Mon) .. 6 (Sun)
+$weekday = (int)date('N') - 1;
+
 $query = "SELECT 
             si.id as store_inventory_id,
             sia.store_id,
@@ -86,7 +89,7 @@ $query = "SELECT
             b.id as barcode_id,
             COALESCE(si.current_stock, 0) as current_stock,
             COALESCE(si.minimum_stock, 0) as minimum_stock,
-            COALESCE(si.selling_price, i.selling_price) as selling_price,
+            COALESCE(wp.price, COALESCE(si.selling_price, i.selling_price)) as selling_price,
             COALESCE(si.cost_price, i.base_price) as cost_price,
             si.location_in_store,
             si.aisle,
@@ -119,12 +122,18 @@ $query = "SELECT
           LEFT JOIN containers cont ON i.container_id = cont.id
           LEFT JOIN barcodes b ON i.id = b.item_id
           LEFT JOIN store_inventory si ON (sia.item_id = si.item_id AND sia.store_id = si.store_id AND b.id = si.barcode_id)
+          LEFT JOIN item_weekly_prices wp ON (wp.item_id = i.id AND wp.store_id = sia.store_id AND wp.weekday = ?)
           WHERE {$where_clause}
           ORDER BY i.name ASC, i.size ASC, i.color ASC";
 
 $stmt = $conn->prepare($query);
 if (!empty($params)) {
+    // Prepend weekday to params/types
+    $param_types = 'i' . $param_types;
+    array_unshift($params, $weekday);
     $stmt->bind_param($param_types, ...$params);
+} else {
+    $stmt->bind_param('i', $weekday);
 }
 $stmt->execute();
 $result = $stmt->get_result();

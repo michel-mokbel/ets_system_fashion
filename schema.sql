@@ -437,7 +437,7 @@ CREATE TABLE `users` (
   `password` varchar(255) NOT NULL,
   `email` varchar(100) DEFAULT NULL,
   `full_name` varchar(100) DEFAULT NULL,
-  `role` enum('admin','store_manager','sales_person') NOT NULL,
+  `role` enum('admin','inventory_manager','transfer_manager','store_manager','sales_person','viewer') NOT NULL,
   `store_id` int DEFAULT NULL,
   `manager_password` varchar(255) DEFAULT NULL,
   `status` enum('active','inactive') DEFAULT 'active',

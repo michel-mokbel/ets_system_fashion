@@ -22,12 +22,15 @@ if (!can_access_inventory()) {
                 <i class="bi bi-box me-2"></i>Warehouse Boxes Management
             </h1>
             <div class="d-flex gap-2">
+                <?php if (is_admin() || is_inventory_manager()): ?>
                 <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addBoxModal">
                     <i class="bi bi-plus-circle me-1"></i> Add New Box
                 </button>
+
                 <button class="btn btn-info" id="refreshBoxes">
                     <i class="bi bi-arrow-clockwise me-1"></i> Refresh
                 </button>
+                <?php endif; ?>
             </div>
         </div>
 

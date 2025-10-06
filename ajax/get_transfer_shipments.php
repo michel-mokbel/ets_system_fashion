@@ -110,6 +110,10 @@ function getShipmentsList() {
                 s1.store_code as source_store_code,
                 s2.name as destination_store_name,
                 s2.store_code as destination_store_code,
+                -- aggregated destinations from inventory_transactions (inbound)
+                GROUP_CONCAT(DISTINCT sd.id) AS dest_ids,
+                GROUP_CONCAT(DISTINCT sd.name) AS dest_names,
+                GROUP_CONCAT(DISTINCT sd.store_code) AS dest_codes,
                 ts.total_items,
                 ts.status,
                 COALESCE(ts.transfer_type, 'legacy') as transfer_type,
@@ -127,7 +131,10 @@ function getShipmentsList() {
               LEFT JOIN users u1 ON ts.created_by = u1.id
               LEFT JOIN users u2 ON ts.packed_by = u2.id
               LEFT JOIN users u3 ON ts.received_by = u3.id
+              LEFT JOIN inventory_transactions it ON it.reference_type = 'shipment' AND it.transfer_type = 'inbound' AND it.shipment_id = ts.id
+              LEFT JOIN stores sd ON sd.id = it.store_id
               $where_clause
+              GROUP BY ts.id
               ORDER BY ts.created_at DESC";
     
     $stmt = $conn->prepare($query);
@@ -139,21 +146,18 @@ function getShipmentsList() {
     
     $shipments = [];
     while ($row = $result->fetch_assoc()) {
-        // Derive destinations from transactions for multi-destination shipments
+        // Parse aggregated destinations (if any)
         $destinations = [];
-        $dest_q = $conn->prepare("SELECT DISTINCT it.store_id, s.name, s.store_code
-                                  FROM inventory_transactions it
-                                  JOIN stores s ON s.id = it.store_id
-                                  WHERE it.reference_type = 'shipment' AND it.transfer_type = 'inbound' AND it.shipment_id = ?");
-        if ($dest_q) {
-            $dest_q->bind_param('i', $row['id']);
-            $dest_q->execute();
-            $dest_r = $dest_q->get_result();
-            while ($d = $dest_r->fetch_assoc()) {
+        if (!empty($row['dest_ids'])) {
+            $ids = explode(',', $row['dest_ids']);
+            $names = explode(',', $row['dest_names'] ?? '');
+            $codes = explode(',', $row['dest_codes'] ?? '');
+            $len = count($ids);
+            for ($i = 0; $i < $len; $i++) {
                 $destinations[] = [
-                    'id' => (int)$d['store_id'],
-                    'name' => $d['name'],
-                    'code' => $d['store_code']
+                    'id' => (int)($ids[$i] ?? 0),
+                    'name' => $names[$i] ?? '',
+                    'code' => $codes[$i] ?? ''
                 ];
             }
         }

@@ -879,6 +879,30 @@ function processNewContainerItem($item, $container_id) {
             }
             
             error_log("processNewContainerItem: Successfully added to store_inventory");
+			
+			// Ensure store assignments for all stores except store_id = 6
+			try {
+				$stores_stmt = $conn->prepare("SELECT id FROM stores WHERE status = 'active' AND id != 6");
+				$stores_stmt->execute();
+				$stores_result = $stores_stmt->get_result();
+				
+				$assignment_sql = "INSERT INTO store_item_assignments (store_id, item_id, assigned_by, notes) 
+							  VALUES (?, ?, ?, 'Auto-assigned via container processing') 
+							  ON DUPLICATE KEY UPDATE 
+							  is_active = 1,
+							  assigned_by = VALUES(assigned_by),
+							  assigned_at = CURRENT_TIMESTAMP";
+				$assignment_stmt = $conn->prepare($assignment_sql);
+				$user_id = $_SESSION['user_id'] ?? 1;
+				
+				while ($store = $stores_result->fetch_assoc()) {
+					$store_id = (int)$store['id'];
+					$assignment_stmt->bind_param('iii', $store_id, $new_item_id, $user_id);
+					$assignment_stmt->execute();
+				}
+			} catch (Exception $e) {
+				error_log("processNewContainerItem: Failed to ensure store assignments: " . $e->getMessage());
+			}
             
         } catch (Exception $e) {
             error_log("processNewContainerItem: Error adding to store_inventory: " . $e->getMessage());

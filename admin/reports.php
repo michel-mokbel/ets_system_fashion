@@ -71,6 +71,49 @@ function getInventoryTransactions($conn, $start_date, $end_date) {
     return $transactions;
 }
 
+// Invoice Items with Container
+function getInvoiceItemsWithContainer($conn, $start_datetime, $end_datetime, $store_id = '', $category_id = '', $subcategory_id = '', $container_id = '') {
+    $where = ["inv.payment_status = 'paid'", "inv.created_at BETWEEN ? AND ?"];
+    $params = [$start_datetime, $end_datetime];
+    $types = 'ss';
+    
+    if (!empty($store_id)) { $where[] = "inv.store_id = ?"; $params[] = $store_id; $types .= 'i'; }
+    if (!empty($category_id)) { $where[] = "ii.category_id = ?"; $params[] = $category_id; $types .= 'i'; }
+    if (!empty($subcategory_id)) { $where[] = "ii.subcategory_id = ?"; $params[] = $subcategory_id; $types .= 'i'; }
+    if (!empty($container_id)) { $where[] = "ii.container_id = ?"; $params[] = $container_id; $types .= 'i'; }
+    
+    $sql = "SELECT
+                inv.invoice_number,
+                inv.created_at as invoice_date,
+                s.name as store_name,
+                ii.item_code,
+                ii.name as item_name,
+                cont.container_number,
+                it.quantity,
+                it.unit_price,
+                it.total_price
+            FROM invoices inv
+            JOIN stores s ON inv.store_id = s.id
+            JOIN invoice_items it ON inv.id = it.invoice_id
+            JOIN inventory_items ii ON it.item_id = ii.id
+            LEFT JOIN containers cont ON ii.container_id = cont.id
+            WHERE " . implode(' AND ', $where) . "
+            ORDER BY inv.created_at DESC, inv.id DESC, it.id ASC";
+    
+    $stmt = $conn->prepare($sql);
+    if (!$stmt) {
+        error_log('SQL Error in getInvoiceItemsWithContainer: ' . $conn->error);
+        return [];
+    }
+    $stmt->bind_param($types, ...$params);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $rows = [];
+    while ($r = $result->fetch_assoc()) {
+        $rows[] = $r;
+    }
+    return $rows;
+}
 
 
 // Daily Sales
@@ -908,6 +951,11 @@ function getContainersReport($conn, $start_date, $end_date) {
                 </a>
             </li>
             <li class="nav-item">
+                <a class="nav-link <?php echo ($report_type == 'invoice_items_with_container') ? 'active' : ''; ?>" href="?type=invoice_items_with_container">
+                    <i class="bi bi-receipt me-1"></i> Invoice Items with Container
+                </a>
+            </li>
+            <li class="nav-item">
                 <a class="nav-link <?php echo ($report_type == 'sales_per_item') ? 'active' : ''; ?>" href="?type=sales_per_item">
                     <i class="bi bi-box me-1"></i> Daily Sales per Store per Item
                 </a>
@@ -1001,9 +1049,10 @@ $salespersons = $selected_store ? get_salespersons_by_store($selected_store) : g
 $selected_category = isset($_GET['category_id']) ? $_GET['category_id'] : '';
 $selected_subcategory = isset($_GET['subcategory_id']) ? $_GET['subcategory_id'] : '';
 $selected_salesperson = isset($_GET['salesperson_id']) ? $_GET['salesperson_id'] : '';
+$selected_container = isset($_GET['container_id']) ? $_GET['container_id'] : '';
 $subcategories = $selected_category ? get_subcategories($selected_category) : [];
 ?>
-<?php if (in_array($report_type, ['sales_per_store', 'sales_per_item', 'expenses_per_store', 'sales_per_invoice', 'sales_vs_expenses'])): ?>
+<?php if (in_array($report_type, ['sales_per_store', 'sales_per_item', 'expenses_per_store', 'sales_per_invoice', 'sales_vs_expenses', 'invoice_items_with_container'])): ?>
 <!-- Date and Filter Bar for Sales Reports -->
 <div class="card mb-4">
   <div class="card-body">
@@ -1054,6 +1103,21 @@ $subcategories = $selected_category ? get_subcategories($selected_category) : []
           <?php endforeach; ?>
         </select>
       </div>
+      <?php
+        $containers_list = [];
+        $containers_q = $conn->query("SELECT id, container_number FROM containers ORDER BY container_number DESC");
+        if ($containers_q) { while ($c = $containers_q->fetch_assoc()) { $containers_list[] = $c; } }
+        $selected_container = isset($_GET['container_id']) ? $_GET['container_id'] : '';
+      ?>
+      <div class="col-md-2">
+        <label class="form-label">Container</label>
+        <select class="form-select" name="container_id">
+          <option value="">All Containers</option>
+          <?php foreach ($containers_list as $cont): ?>
+            <option value="<?php echo $cont['id']; ?>" <?php if ($selected_container == $cont['id']) echo 'selected'; ?>><?php echo htmlspecialchars($cont['container_number']); ?></option>
+          <?php endforeach; ?>
+        </select>
+      </div>
       <div class="col-md-2">
         <label class="form-label">Subcategory</label>
         <select class="form-select" name="subcategory_id">
@@ -1067,6 +1131,56 @@ $subcategories = $selected_category ? get_subcategories($selected_category) : []
         <button type="submit" class="btn btn-primary"><i class="bi bi-funnel me-1"></i> Filter</button>
       </div>
     </form>
+</div>
+</div>
+<?php endif; ?>
+
+<?php if ($report_type === 'invoice_items_with_container'): ?>
+<?php
+    $rows = getInvoiceItemsWithContainer($conn, $start_datetime, $end_datetime, $selected_store, $selected_category, $selected_subcategory, $selected_container);
+?>
+<div class="card mb-4">
+  <div class="card-header d-flex justify-content-between align-items-center">
+    <h5 class="mb-0"><i class="bi bi-receipt me-2"></i>Invoice Items with Container</h5>
+    <small class="text-muted">Date: <?php echo htmlspecialchars($start_date); ?> to <?php echo htmlspecialchars($end_date); ?></small>
+  </div>
+  <div class="card-body">
+    <div class="table-responsive">
+      <table class="table table-sm table-striped table-hover">
+        <thead class="table-light">
+          <tr>
+            <th>Invoice #</th>
+            <th>Date</th>
+            <th>Store</th>
+            <th>Item Code</th>
+            <th>Item Name</th>
+            <th>Container</th>
+            <th class="text-end">Qty</th>
+            <th class="text-end">Unit Price</th>
+            <th class="text-end">Line Total</th>
+          </tr>
+        </thead>
+        <tbody>
+          <?php if (empty($rows)): ?>
+            <tr><td colspan="9" class="text-center text-muted py-3">No data</td></tr>
+          <?php else: ?>
+            <?php foreach ($rows as $r): ?>
+              <tr>
+                <td><?php echo htmlspecialchars($r['invoice_number']); ?></td>
+                <td><?php echo htmlspecialchars(date('Y-m-d H:i', strtotime($r['invoice_date']))); ?></td>
+                <td><?php echo htmlspecialchars($r['store_name']); ?></td>
+                <td><?php echo htmlspecialchars($r['item_code']); ?></td>
+                <td><?php echo htmlspecialchars($r['item_name']); ?></td>
+                <td><?php echo htmlspecialchars($r['container_number'] ?? '-'); ?></td>
+                <td class="text-end"><?php echo (int)$r['quantity']; ?></td>
+                <td class="text-end">CFA <?php echo number_format((float)$r['unit_price'], 2); ?></td>
+                <td class="text-end">CFA <?php echo number_format((float)$r['total_price'], 2); ?></td>
+              </tr>
+            <?php endforeach; ?>
+          <?php endif; ?>
+        </tbody>
+      </table>
+    </div>
   </div>
 </div>
 <?php endif; ?>

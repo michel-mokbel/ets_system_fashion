@@ -28,20 +28,26 @@ if (!$store_id) {
     echo json_encode(['success' => false, 'message' => 'No store ID in session']);
     exit;
 }
-// Search items by name or code, join barcodes and store_inventory for price/stock
-// First try with store assignments, then fallback to all items if none found
-$query = "SELECT i.id, i.name, i.item_code, b.id as barcode_id, b.barcode, COALESCE(si.selling_price, i.base_price) as price, COALESCE(si.current_stock, 0) as current_stock
+// Determine weekday: 0 (Mon) .. 6 (Sun)
+$weekday = (int)date('N') - 1;
+
+// Search items by name or code, join barcodes and store_inventory for price/stock.
+// Prefer store assignment; price resolves via weekly price override if present.
+$query = "SELECT i.id, i.name, i.item_code, b.id as barcode_id, b.barcode,
+                 COALESCE(wp.price, COALESCE(si.selling_price, i.base_price)) as price,
+                 COALESCE(si.current_stock, 0) as current_stock
           FROM inventory_items i
           LEFT JOIN store_item_assignments sia ON i.id = sia.item_id AND sia.store_id = ? AND sia.is_active = 1
           LEFT JOIN barcodes b ON i.id = b.item_id
           LEFT JOIN store_inventory si ON i.id = si.item_id AND si.store_id = ? AND si.barcode_id = b.id
+          LEFT JOIN item_weekly_prices wp ON wp.item_id = i.id AND wp.store_id = ? AND wp.weekday = ?
           WHERE (i.name LIKE ? OR i.item_code LIKE ?) 
             AND i.status = 'active' 
           GROUP BY i.id, b.id
           ORDER BY sia.item_id IS NOT NULL DESC, i.name ASC LIMIT 20";
 $stmt = $conn->prepare($query);
 $like = "%$term%";
-$stmt->bind_param('iiss', $store_id, $store_id, $like, $like);
+$stmt->bind_param('iiisss', $store_id, $store_id, $store_id, $weekday, $like, $like);
 $stmt->execute();
 $result = $stmt->get_result();
 $items = [];

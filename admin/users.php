@@ -21,6 +21,7 @@ if (!is_admin()) {
             <option value="transfer_manager">Transfer Manager</option>
             <option value="store_manager">Store Manager</option>
             <option value="sales_person">Sales Person</option>
+            <option value="viewer">Viewer</option>
           </select>
         </div>
         <div class="col-lg-3 col-md-6 col-sm-12">
@@ -111,7 +112,8 @@ if (!is_admin()) {
               <option value="inventory_manager">Inventory Manager</option>
               <option value="transfer_manager">Transfer Manager</option>
               <option value="store_manager">Store Manager</option>
-              <option value="sales_person">Sales Person</option>
+            <option value="sales_person">Sales Person</option>
+            <option value="viewer">Viewer (Read-only)</option>
             </select>
           </div>
           <div class="mb-3">

@@ -89,7 +89,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             // Ensure session data is written before redirecting
             session_write_close();
             
-            // Redirect based on role
+            // Redirect based on role (route read-only/report users to reports page)
             switch ($user['role']) {
                 case 'admin':
                     header("Location: ../admin/dashboard.php");
@@ -105,6 +105,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     break;
                 case 'sales_person':
                     header("Location: ../store/pos.php");
+                    break;
+                case 'viewer':
+                    header("Location: ../admin/reports.php");
                     break;
                 default:
                     header("Location: ../admin/dashboard.php");

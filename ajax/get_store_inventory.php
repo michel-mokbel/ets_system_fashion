@@ -55,18 +55,34 @@ if ($search) {
 
 $where_clause = implode(' AND ', $where_conditions);
 
-$query = "SELECT i.id, i.name, i.item_code, b.id as barcode_id, COALESCE(si.selling_price, i.base_price) as selling_price, COALESCE(si.current_stock, 0) as current_stock, c.container_number, c.id as container_id
+// Determine weekday: 0 (Mon) .. 6 (Sun)
+$weekday = (int)date('N') - 1;
+
+$query = "SELECT 
+          i.id, 
+          i.name, 
+          i.item_code, 
+          b.id as barcode_id, 
+          COALESCE(wp.price, COALESCE(si.selling_price, i.base_price)) as selling_price, 
+          COALESCE(si.current_stock, 0) as current_stock, 
+          c.container_number, 
+          c.id as container_id
           FROM inventory_items i
           INNER JOIN store_item_assignments sia ON i.id = sia.item_id
           LEFT JOIN barcodes b ON i.id = b.item_id
           LEFT JOIN store_inventory si ON i.id = si.item_id AND si.store_id = ? AND si.barcode_id = b.id
+          LEFT JOIN item_weekly_prices wp ON wp.item_id = i.id AND wp.store_id = ? AND wp.weekday = ?
           LEFT JOIN containers c ON i.container_id = c.id
           WHERE $where_clause AND sia.store_id = ? AND sia.is_active = 1
           GROUP BY i.id, b.id
           ORDER BY i.name ASC";
 
 // Add store_id parameter for store assignment check
-$params[] = $store_id;
+$params[] = $store_id; // for wp.store_id join
+$param_types .= 'i';
+$params[] = $weekday; // for wp.weekday
+$param_types .= 'i';
+$params[] = $store_id; // for sia.store_id in WHERE
 $param_types .= 'i';
 
 $stmt = $conn->prepare($query);

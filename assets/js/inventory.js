@@ -83,23 +83,33 @@ document.addEventListener('DOMContentLoaded', function() {
                 title: 'Actions',
                 orderable: false,
                 render: function(data, type, row) {
+                    if (window.canEditInventory) {
+                        return `
+                            <div class="d-flex gap-1">
+                                <button class="btn btn-sm btn-info view-details" data-id="${data}" 
+                                        data-bs-toggle="tooltip" title="View Details">
+                                    <i class="bi bi-eye"></i>
+                                </button>
+                                <button class="btn btn-sm btn-info adjust-stock" data-id="${data}" 
+                                        data-bs-toggle="tooltip" title="Adjust Stock">
+                                    <i class="bi bi-box-arrow-in-down"></i>
+                                </button>
+                                <button class="btn btn-sm btn-primary edit-item" data-id="${data}" 
+                                        data-bs-toggle="tooltip" title="Edit Item">
+                                    <i class="bi bi-pencil"></i>
+                                </button>
+                                <button class="btn btn-sm btn-danger delete-item" data-id="${data}"
+                                        data-bs-toggle="tooltip" title="Delete Item">
+                                    <i class="bi bi-trash"></i>
+                                </button>
+                            </div>
+                        `;
+                    }
                     return `
                         <div class="d-flex gap-1">
                             <button class="btn btn-sm btn-info view-details" data-id="${data}" 
                                     data-bs-toggle="tooltip" title="View Details">
                                 <i class="bi bi-eye"></i>
-                            </button>
-                            <button class="btn btn-sm btn-info adjust-stock" data-id="${data}" 
-                                    data-bs-toggle="tooltip" title="Adjust Stock">
-                                <i class="bi bi-box-arrow-in-down"></i>
-                            </button>
-                            <button class="btn btn-sm btn-primary edit-item" data-id="${data}" 
-                                    data-bs-toggle="tooltip" title="Edit Item">
-                                <i class="bi bi-pencil"></i>
-                            </button>
-                            <button class="btn btn-sm btn-danger delete-item" data-id="${data}"
-                                    data-bs-toggle="tooltip" title="Delete Item">
-                                <i class="bi bi-trash"></i>
                             </button>
                         </div>
                     `;
@@ -134,7 +144,10 @@ document.addEventListener('DOMContentLoaded', function() {
             infoFiltered: "(filtered from _MAX_ total items)"
         },
         dom: '<"d-flex justify-content-between align-items-center mb-3"<"d-flex align-items-center"l><"d-flex"f>>t<"d-flex justify-content-between align-items-center mt-3"<"text-muted"i><"pagination-container"p>>',
-        pageLength: 10
+        pageLength: 10,
+        columnDefs: [
+            { targets: -1, visible: !!window.canEditInventory }
+        ]
     });
 
     function renderInventoryCards(rows) {
@@ -175,9 +188,11 @@ document.addEventListener('DOMContentLoaded', function() {
                 </div>
                 <div class="mobile-card-actions d-flex gap-1">
                     <button class="btn btn-sm btn-info view-details" data-id="${row.id}"><i class="bi bi-eye"></i></button>
-                    <button class="btn btn-sm btn-info adjust-stock" data-id="${row.id}"><i class="bi bi-box-arrow-in-down"></i></button>
-                    <button class="btn btn-sm btn-primary edit-item" data-id="${row.id}"><i class="bi bi-pencil"></i></button>
-                    <button class="btn btn-sm btn-danger delete-item" data-id="${row.id}"><i class="bi bi-trash"></i></button>
+                    ${window.canEditInventory ? `
+                        <button class="btn btn-sm btn-info adjust-stock" data-id="${row.id}"><i class="bi bi-box-arrow-in-down"></i></button>
+                        <button class="btn btn-sm btn-primary edit-item" data-id="${row.id}"><i class="bi bi-pencil"></i></button>
+                        <button class="btn btn-sm btn-danger delete-item" data-id="${row.id}"><i class="bi bi-trash"></i></button>
+                    ` : ''}
                 </div>
             `;
             container.appendChild(card);
@@ -1791,6 +1806,32 @@ function loadItemData(itemId) {
                 if (item.category_id) {
                     loadSubcategories(item.category_id, item.subcategory_id);
                 }
+                
+                // Handle weekly pricing in edit modal
+                if (item.has_weekly_pricing && item.weekly_prices) {
+                    $('#editWeeklyPricingToggle').prop('checked', true);
+                    $('#editWeeklyStoreSelect').val(item.weekly_store_id);
+                    
+                    // Populate weekly prices
+                    for (let d = 0; d < 7; d++) {
+                        const price = item.weekly_prices[d] || '';
+                        $(`input[name="weekly_price_${d}"]`).val(price);
+                    }
+                    
+                    // Show weekly pricing containers
+                    $('#editWeeklyStoreContainer').show();
+                    $('#editWeeklyPricesContainer').show();
+                } else {
+                    $('#editWeeklyPricingToggle').prop('checked', false);
+                    $('#editWeeklyStoreContainer').hide();
+                    $('#editWeeklyPricesContainer').hide();
+                    
+                    // Clear weekly prices
+                    for (let d = 0; d < 7; d++) {
+                        $(`input[name="weekly_price_${d}"]`).val('');
+                    }
+                }
+                
                 const editModal = new bootstrap.Modal(document.getElementById('editItemModal'));
         editModal.show();
             } else {
@@ -1865,6 +1906,21 @@ function loadItemDetails(itemId) {
                 $('#detailItemStatus').text(item.status);
                 $('#detailItemImage').attr('src', item.image_path ? '../' + item.image_path : '../assets/img/no-image.png');
                 $('#detailItemEdit').data('id', item.id);
+                
+                // Handle weekly pricing display
+                if (item.has_weekly_pricing && item.weekly_prices) {
+                    const days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+                    let weeklyHtml = '<div class="row g-1">';
+                    for (let d = 0; d < 7; d++) {
+                        const price = item.weekly_prices[d] || 0;
+                        weeklyHtml += `<div class="col-6 col-md-3"><small class="text-muted">${days[d]}:</small> ${parseFloat(price).toFixed(2)}</div>`;
+                    }
+                    weeklyHtml += '</div>';
+                    $('#detailWeeklyPricing').html(weeklyHtml);
+                    $('#detailWeeklyPricingRow').show();
+                } else {
+                    $('#detailWeeklyPricingRow').hide();
+                }
                 // Barcode logic
                 if (item.barcodes_list && item.barcodes_list.length > 0 && item.barcodes_list[0]) {
                     $('#detailItemBarcode').text(item.barcodes_list[0]);

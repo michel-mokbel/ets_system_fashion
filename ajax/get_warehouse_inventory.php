@@ -26,6 +26,7 @@ function getWarehouseInventory() {
     
     $search = trim($_POST['search'] ?? '');
     $category_filter = (int)($_POST['category_id'] ?? 0);
+    $container_filter = (int)($_POST['container_id'] ?? 0);
     $stock_filter = $_POST['stock_filter'] ?? '';
     $destination_store_id = (int)($_POST['destination_store_id'] ?? 0);
     
@@ -57,6 +58,13 @@ function getWarehouseInventory() {
         $where_conditions[] = "COALESCE(si_warehouse.current_stock, 0) <= COALESCE(si_warehouse.minimum_stock, 0) AND COALESCE(si_warehouse.current_stock, 0) > 0";
     }
     
+    // Container filter
+    if ($container_filter > 0) {
+        $where_conditions[] = "i.container_id = ?";
+        $params[] = $container_filter;
+        $param_types .= 'i';
+    }
+
     $where_clause = implode(' AND ', $where_conditions);
     
     $query = "SELECT 
@@ -88,6 +96,7 @@ function getWarehouseInventory() {
     $result = $stmt->get_result();
     
     $items = [];
+    $containers_map = [];
     while ($row = $result->fetch_assoc()) {
         $items[] = [
             'id' => $row['id'],
@@ -110,9 +119,18 @@ function getWarehouseInventory() {
             'container_number' => $row['container_number'],
             'container_id' => $row['container_id']
         ];
+
+        if (!empty($row['container_id'])) {
+            $containers_map[$row['container_id']] = $row['container_number'];
+        }
     }
     
-    echo json_encode(['success' => true, 'items' => $items]);
+    $containers = [];
+    foreach ($containers_map as $id => $num) {
+        $containers[] = ['id' => (int)$id, 'container_number' => $num];
+    }
+
+    echo json_encode(['success' => true, 'items' => $items, 'containers' => $containers]);
 }
 
 function getStockStatus($current, $minimum) {

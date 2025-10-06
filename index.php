@@ -10,7 +10,16 @@ require_once 'includes/language.php';
 
 // If user is already logged in, redirect to dashboard
 if (isset($_SESSION['user_id'])) {
-    header("Location: admin/dashboard.php");
+    $role = $_SESSION['user_role'] ?? '';
+    switch ($role) {
+        case 'admin': header('Location: admin/dashboard.php'); break;
+        case 'inventory_manager': header('Location: admin/store_items.php'); break;
+        case 'transfer_manager': header('Location: admin/transfers.php'); break;
+        case 'store_manager':
+        case 'sales_person': header('Location: store/pos.php'); break;
+        case 'viewer': header('Location: admin/reports.php'); break;
+        default: header('Location: admin/dashboard.php'); break;
+    }
     exit();
 }
 

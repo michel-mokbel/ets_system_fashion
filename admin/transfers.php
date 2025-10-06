@@ -15,12 +15,14 @@ if (!can_access_transfers()) {
 <div class="d-flex justify-content-between align-items-center mb-4">
     <h1><i class="bi bi-arrow-left-right me-2"></i>Transfer Management</h1>
     <div>
+        <?php if (is_admin() || is_transfer_manager()): ?>
         <button class="btn btn-success me-2" data-bs-toggle="modal" data-bs-target="#storeToStoreModal">
             <i class="bi bi-arrow-left-right me-1"></i> Store to Store Transfer
         </button>
         <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#createTransferModal">
             <i class="bi bi-plus-circle me-1"></i> Create Transfer
         </button>
+        <?php endif; ?>
     </div>
 </div>
 
@@ -377,6 +379,12 @@ if (!can_access_transfers()) {
                                 </select>
                             </div>
                             <div class="col-md-3">
+                                <select class="form-select" id="boxContainerFilter">
+                                    <option value="">All Containers</option>
+                                    <!-- Containers will be loaded dynamically -->
+                                </select>
+                            </div>
+                            <div class="col-md-3">
                                 <button type="button" class="btn btn-secondary w-100" id="loadWarehouseBoxes">
                                     <i class="bi bi-arrow-clockwise me-1"></i> Load Boxes
                                 </button>
@@ -406,6 +414,7 @@ if (!can_access_transfers()) {
                                                 </th>
                                                 <th width="15%">Box Number</th>
                                                 <th width="20%">Box Name</th>
+                                                <th width="15%">Container</th>
                                                 <th width="15%">Type</th>
                                                 <th width="15%">Available</th>
                                                 <th width="15%">Request Qty</th>
@@ -471,6 +480,11 @@ if (!can_access_transfers()) {
                                 </select>
                             </div>
                             <div class="col-md-3">
+                                <select class="form-select" id="itemContainerFilter">
+                                    <option value="">All Containers</option>
+                                </select>
+                            </div>
+                            <div class="col-md-3">
                                 <button type="button" class="btn btn-secondary w-100" id="loadDestinationItems">
                                     <i class="bi bi-arrow-clockwise me-1"></i> Load Items
                                 </button>
@@ -496,6 +510,7 @@ if (!can_access_transfers()) {
                                             <tr>
                                                 <th>Store</th>
                                                 <th>Item</th>
+                                                <th>Container</th>
                                                 <th>Current Stock</th>
                                                 <th>Price</th>
                                                 <th>Base Price</th>
@@ -585,6 +600,11 @@ if (!can_access_transfers()) {
                                     <option value="">All Stock Levels</option>
                                     <option value="available">Available Only</option>
                                     <option value="low">Low Stock</option>
+                                </select>
+                            </div>
+                            <div class="col-md-2">
+                                <select class="form-select" id="warehouseContainerFilter">
+                                    <option value="">All Containers</option>
                                 </select>
                             </div>
                             <div class="col-md-2">
@@ -1115,10 +1135,12 @@ $(document).ready(function() {
                 data: null,
                 orderable: false,
                 render: function(data, type, row) {
-                    let actions = `<button class="btn btn-sm btn-outline-primary me-1" onclick="viewTransferDetails(${row.id})">
+
+                    let actions = `
+                                   <button class="btn btn-sm btn-outline-primary me-1" onclick="viewTransferDetails(${row.id})">
                                      <i class="bi bi-eye"></i>
-                                   </button>`;
-                    
+                                   </button> `;
+                                   
                     if (row.status === 'pending') {
                         actions += `<button class="btn btn-sm btn-success me-1" onclick="packShipment(${row.id})" title="Complete Transfer">
                                       <i class="bi bi-check-circle-fill me-1"></i>Complete
@@ -1129,9 +1151,9 @@ $(document).ready(function() {
                     }
                     
                     // Delete button for all transfers (can reverse any status)
-                    actions += `<button class="btn btn-sm btn-danger" onclick="deleteTransferFromTable(${row.id})" title="Reverse Transfer">
+                    actions += `<?php if (is_admin() || is_transfer_manager()): ?><button class="btn btn-sm btn-danger" onclick="deleteTransferFromTable(${row.id})" title="Reverse Transfer">
                                   <i class="bi bi-arrow-counterclockwise"></i>
-                                </button>`;
+                                </button><?php endif; ?>`;
                     
                     return actions;
                 }
@@ -1259,11 +1281,12 @@ $(document).ready(function() {
     function loadWarehouseBoxes() {
         const search = $('#boxSearch').val();
         const type = $('#boxTypeFilter').val();
+        const containerId = $('#boxContainerFilter').val();
         
         $.ajax({
             url: '../ajax/get_warehouse_boxes.php',
             type: 'GET',
-            data: { search: search, type: type },
+            data: { search: search, type: type, container_id: containerId },
             dataType: 'json',
             success: function(response) {
                 if (response.success) {
@@ -1280,6 +1303,8 @@ $(document).ready(function() {
                     
                     // Update type filter options
                     updateBoxTypeFilter(response.box_types);
+                    // Update container filter options
+                    updateBoxContainerFilter(response.containers || []);
                 } else {
                     Swal.fire('Error', response.message, 'error');
                 }
@@ -1307,7 +1332,8 @@ $(document).ready(function() {
             data: { 
                     store_id: storeId,
                 search: search,
-                category_id: categoryId
+                category_id: categoryId,
+                container_id: $('#itemContainerFilter').val()
             },
                 dataType: 'json'
             }).done(function(response) {
@@ -1317,6 +1343,8 @@ $(document).ready(function() {
                         return Object.assign({}, it, { destination_store_id: parseInt(storeId), destination_store_label: storeName });
                     });
                     availableItems = availableItems.concat(augmented);
+                    // Update container filter from response
+                    updateItemContainerFilter(response.containers || []);
                 }
             }).always(function(){
                 pending -= 1;
@@ -1336,6 +1364,7 @@ $(document).ready(function() {
         loadWarehouseBoxes();
     });
     $('#boxTypeFilter').on('change', loadWarehouseBoxes);
+    $('#boxContainerFilter').on('change', loadWarehouseBoxes);
     
     // Select all boxes checkbox
     $('#selectAllBoxesCheckbox').on('change', function() {
@@ -1376,7 +1405,7 @@ $(document).ready(function() {
         if (availableBoxes.length === 0) {
             tbody.append(`
                 <tr>
-                    <td colspan="7" class="text-center text-muted py-3">
+                    <td colspan="8" class="text-center text-muted py-3">
                         <i class="bi bi-box me-2"></i>No boxes found
                     </td>
                 </tr>
@@ -1397,6 +1426,7 @@ $(document).ready(function() {
                         </td>
                         <td><strong>${escapeHtml(box.box_number)}</strong></td>
                         <td>${escapeHtml(box.box_name)}</td>
+                        <td>${escapeHtml(box.container_number || '-')}</td>
                         <td>${escapeHtml(box.box_type || '-')}</td>
                         <td>
                             <span class="badge ${hasQuantity ? 'bg-success' : 'bg-warning'}">
@@ -1430,6 +1460,20 @@ $(document).ready(function() {
         filter.find('option:not(:first)').remove();
         boxTypes.forEach(type => {
             filter.append(`<option value="${escapeHtml(type)}">${escapeHtml(type)}</option>`);
+        });
+        
+        filter.val(currentValue);
+    }
+
+    // Update box container filter
+    function updateBoxContainerFilter(containers) {
+        const filter = $('#boxContainerFilter');
+        const currentValue = filter.val();
+        
+        filter.find('option:not(:first)').remove();
+        containers.forEach(c => {
+            const num = c.container_number || `Container #${c.id}`;
+            filter.append(`<option value="${c.id}">${escapeHtml(num)}</option>`);
         });
         
         filter.val(currentValue);
@@ -1522,6 +1566,22 @@ $(document).ready(function() {
         loadDestinationItems();
     });
     $('#categoryFilter').on('change', loadDestinationItems);
+    $('#itemContainerFilter').on('change', loadDestinationItems);
+
+    function updateItemContainerFilter(containers) {
+        const filter = $('#itemContainerFilter');
+        const currentValue = filter.val();
+        const existingOptions = new Set();
+        filter.find('option').each(function(){ existingOptions.add($(this).val()); });
+        containers.forEach(c => {
+            const idStr = String(c.id);
+            if (!existingOptions.has(idStr)) {
+                const num = c.container_number || `Container #${c.id}`;
+                filter.append(`<option value="${c.id}">${escapeHtml(num)}</option>`);
+            }
+        });
+        filter.val(currentValue);
+    }
 
     // Render available items for transfer
     function renderAvailableItems() {
@@ -1531,7 +1591,7 @@ $(document).ready(function() {
         if (availableItems.length === 0) {
             tbody.append(`
                 <tr>
-                    <td colspan="6" class="text-center text-muted py-3">
+                    <td colspan="7" class="text-center text-muted py-3">
                         <i class="bi bi-box me-2"></i>No items found in destination store
                     </td>
                 </tr>
@@ -1549,6 +1609,7 @@ $(document).ready(function() {
                             <strong>${escapeHtml(item.item_name)}</strong><br>
                             <small class="text-muted">${escapeHtml(item.item_code)}</small>
                         </td>
+                        <td>${escapeHtml(item.container_number || '-')}</td>
                         <td><span class="badge bg-secondary">${item.current_stock}</span></td>
                         <td>CFA ${parseFloat(item.selling_price).toFixed(2)}</td>
                         <td>
@@ -2953,12 +3014,14 @@ $(document).ready(function() {
                 search: search,
                 category_id: categoryId,
                 stock_filter: stockFilter,
-                destination_store_id: destinationStoreId
+                destination_store_id: destinationStoreId,
+                container_id: $('#warehouseContainerFilter').val()
             },
             dataType: 'json',
             success: function(response) {
                 if (response.success) {
                     warehouseItems = response.items;
+                    updateWarehouseContainerFilter(response.containers || []);
                     renderWarehouseItems();
                 } else {
                     Swal.fire('Error', response.message || 'Failed to load warehouse inventory', 'error');
@@ -2968,6 +3031,26 @@ $(document).ready(function() {
                 Swal.fire('Error', 'Failed to load warehouse inventory', 'error');
             }
         });
+    }
+
+    $('#warehouseContainerFilter').on('change', function(){
+        // trigger a search with updated container filter
+        $('#searchWarehouseItems').click();
+    });
+
+    function updateWarehouseContainerFilter(containers) {
+        const filter = $('#warehouseContainerFilter');
+        const currentValue = filter.val();
+        const existing = new Set();
+        filter.find('option').each(function(){ existing.add($(this).val()); });
+        containers.forEach(c => {
+            const idStr = String(c.id);
+            if (!existing.has(idStr)) {
+                const num = c.container_number || `Container #${c.id}`;
+                filter.append(`<option value="${c.id}">${escapeHtml(num)}</option>`);
+            }
+        });
+        filter.val(currentValue);
     }
 
     // Render warehouse items for selection
@@ -2987,6 +3070,9 @@ $(document).ready(function() {
             const isSelected = selectedDirectItems.some(selected => 
                 selected.item_id === item.id && selected.barcode_id === item.barcode_id
             );
+            const containerHtml = item.container_number 
+                ? '<span class="badge bg-primary">' + escapeHtml(item.container_number) + '</span>' 
+                : '<span class="text-muted">-</span>';
             
             const itemRow = `
                 <tr class="${isSelected ? 'table-active' : ''}" data-item-id="${item.id}" data-barcode-id="${item.barcode_id}">
@@ -2994,7 +3080,7 @@ $(document).ready(function() {
                         <div class="fw-bold">${escapeHtml(item.name)}</div>
                         <div class="text-muted small">
                             <span class="me-2"><strong>Code:</strong> ${escapeHtml(item.item_code)}</span>
-                            <span class="me-2"><strong>Container:</strong> ${item.container_number ? `<span class="badge bg-primary">${escapeHtml(item.container_number)}</span>` : '<span class="text-muted">-</span>'}</span>
+                            <span class="me-2"><strong>Container:</strong> ${containerHtml}</span>
                         </div>
                         <div class="text-muted small">
                             <span class="me-2">${escapeHtml(item.category_name || 'N/A')}</span>

@@ -60,12 +60,30 @@ function is_transfer_manager() {
     return has_role('transfer_manager');
 }
 
+// Read-only viewer role
+function is_view_only() {
+    if (!is_logged_in()) return false;
+    $user_role = $_SESSION['user_role'] ?? '';
+    return $user_role === 'viewer';
+}
+
 function can_access_inventory() {
-    return is_admin() || is_inventory_manager();
+    // Viewers can access pages for read-only browsing
+    return is_admin() || is_inventory_manager() || is_view_only();
 }
 
 function can_access_transfers() {
-    return is_admin() || is_inventory_manager() || is_transfer_manager() || is_store_manager();
+    // Viewers can access pages for read-only browsing
+    return is_admin() || is_inventory_manager() || is_transfer_manager() || is_store_manager() || is_view_only();
+}
+
+// Enforce write restrictions for viewer accounts
+function require_write_access() {
+    if (is_view_only()) {
+        header('Content-Type: application/json');
+        echo json_encode(['success' => false, 'message' => 'Read-only user: action not permitted']);
+        exit;
+    }
 }
 
 function can_access_store($store_id) {
@@ -343,7 +361,9 @@ function generate_barcode($item_id, $price) {
 function get_item_by_barcode($barcode, $store_id = null) {
     global $conn;
     
-    $query = "SELECT i.*, si.current_stock, si.selling_price, si.cost_price, 
+    $query = "SELECT i.*, si.current_stock, 
+                     COALESCE(wp.price, si.selling_price, i.selling_price) as selling_price, 
+                     si.cost_price, 
                      c.name as category_name
               FROM inventory_items i
               LEFT JOIN categories c ON i.category_id = c.id";
@@ -352,9 +372,11 @@ function get_item_by_barcode($barcode, $store_id = null) {
         // Only return items that are assigned to this store
         $query .= " INNER JOIN store_item_assignments sia ON i.id = sia.item_id
                    LEFT JOIN store_inventory si ON (si.item_id = i.id AND si.store_id = ?)
+                   LEFT JOIN item_weekly_prices wp ON (wp.item_id = i.id AND wp.store_id = ? AND wp.weekday = ?)
                    WHERE i.item_code = ? AND sia.store_id = ? AND sia.is_active = 1";
         $stmt = $conn->prepare($query);
-        $stmt->bind_param('isi', $store_id, $barcode, $store_id);
+        $weekday = (int)date('N') - 1;
+        $stmt->bind_param('iiisi', $store_id, $store_id, $weekday, $barcode, $store_id);
     } else {
         $query .= " WHERE i.item_code = ?";
         $stmt = $conn->prepare($query);

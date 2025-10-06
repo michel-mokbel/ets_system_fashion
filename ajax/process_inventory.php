@@ -117,6 +117,34 @@ function processImageUpload($image) {
 }
 
 /**
+ * Upsert weekly prices for an item and a single store
+ * @param mysqli $conn
+ * @param int $item_id
+ * @param int $store_id
+ * @param array $prices associative [0..6] => price (float)
+ */
+function upsertWeeklyPrices($conn, $item_id, $store_id, $prices) {
+    // Insert or update provided days only
+    $sql = "INSERT INTO item_weekly_prices (item_id, store_id, weekday, price) VALUES (?, ?, ?, ?) 
+            ON DUPLICATE KEY UPDATE price = VALUES(price), updated_at = CURRENT_TIMESTAMP";
+    $stmt = $conn->prepare($sql);
+    if (!$stmt) {
+        error_log('Weekly price upsert prepare failed: ' . $conn->error);
+        return false;
+    }
+    foreach ($prices as $weekday => $price) {
+        if ($price === '' || $price === null) continue;
+        $weekday = (int)$weekday;
+        $price = (float)$price;
+        $stmt->bind_param('iiid', $item_id, $store_id, $weekday, $price);
+        if (!$stmt->execute()) {
+            error_log('Weekly price upsert execute failed: ' . $stmt->error);
+        }
+    }
+    return true;
+}
+
+/**
  * Add a new inventory item
  */
 function addItem() {
@@ -243,24 +271,37 @@ function addItem() {
             error_log("Barcode-item combination already exists for item_id: " . $item_id);
         }
 
-        // Handle store assignments if provided
-        if (isset($_POST['store_assignments']) && is_array($_POST['store_assignments'])) {
-            $store_assignments = $_POST['store_assignments'];
-            error_log("Processing store assignments: " . json_encode($store_assignments));
-            
-            foreach ($store_assignments as $store_id) {
-                $store_id = (int)$store_id;
-                if ($store_id > 0) {
-                    // Insert store assignment
-                    $assignment_sql = "INSERT INTO store_item_assignments (store_id, item_id, assigned_by) VALUES (?, ?, ?)";
-                    $assignment_stmt = $conn->prepare($assignment_sql);
-                    $assignment_stmt->bind_param('iii', $store_id, $item_id, $_SESSION['user_id']);
-                    $assignment_result = $assignment_stmt->execute();
-                    
-                    if ($assignment_result) {
-                        error_log("Store assignment created: store_id=$store_id, item_id=$item_id");
-                    } else {
-                        error_log("Failed to create store assignment: " . $assignment_stmt->error);
+        // Weekly pricing handling (single store)
+        $weekly_enabled = isset($_POST['weekly_pricing_enabled']) && $_POST['weekly_pricing_enabled'] == '1';
+        $weekly_store_id = isset($_POST['weekly_store_id']) ? (int)$_POST['weekly_store_id'] : 0;
+        if ($weekly_enabled && $weekly_store_id > 0) {
+            // Assign to only the specified store
+            $assignment_sql = "INSERT INTO store_item_assignments (store_id, item_id, assigned_by) VALUES (?, ?, ?)";
+            $assignment_stmt = $conn->prepare($assignment_sql);
+            $assignment_stmt->bind_param('iii', $weekly_store_id, $item_id, $_SESSION['user_id']);
+            $assignment_stmt->execute();
+
+            // Collect weekly prices 0..6
+            $prices = [];
+            for ($d = 0; $d <= 6; $d++) {
+                $key = 'weekly_price_' . $d;
+                if (isset($_POST[$key]) && $_POST[$key] !== '') {
+                    $prices[$d] = (float)$_POST[$key];
+                }
+            }
+            upsertWeeklyPrices($conn, $item_id, $weekly_store_id, $prices);
+        } else {
+            // Handle store assignments if provided
+            if (isset($_POST['store_assignments']) && is_array($_POST['store_assignments'])) {
+                $store_assignments = $_POST['store_assignments'];
+                error_log("Processing store assignments: " . json_encode($store_assignments));
+                foreach ($store_assignments as $sid) {
+                    $sid = (int)$sid;
+                    if ($sid > 0) {
+                        $assignment_sql = "INSERT INTO store_item_assignments (store_id, item_id, assigned_by) VALUES (?, ?, ?)";
+                        $assignment_stmt = $conn->prepare($assignment_sql);
+                        $assignment_stmt->bind_param('iii', $sid, $item_id, $_SESSION['user_id']);
+                        $assignment_stmt->execute();
                     }
                 }
             }
@@ -450,6 +491,47 @@ function editItem() {
         }
         $conn->commit();
         
+        // Weekly pricing handling on edit
+        $weekly_enabled = isset($_POST['weekly_pricing_enabled']) && $_POST['weekly_pricing_enabled'] == '1';
+        $weekly_store_id = isset($_POST['weekly_store_id']) ? (int)$_POST['weekly_store_id'] : 0;
+        if ($weekly_enabled && $weekly_store_id > 0) {
+            // Ensure only selected store is active assignment; deactivate others
+            $deactivate = $conn->prepare("UPDATE store_item_assignments SET is_active = 0 WHERE item_id = ? AND store_id <> ?");
+            if ($deactivate) {
+                $deactivate->bind_param('ii', $item_id, $weekly_store_id);
+                $deactivate->execute();
+            }
+            // Ensure selected assignment exists and is active
+            $upsertAssign = $conn->prepare("INSERT INTO store_item_assignments (store_id, item_id, assigned_by, is_active) VALUES (?, ?, ?, 1) ON DUPLICATE KEY UPDATE is_active = 1");
+            if ($upsertAssign) {
+                $assigned_by = $_SESSION['user_id'];
+                $upsertAssign->bind_param('iii', $weekly_store_id, $item_id, $assigned_by);
+                $upsertAssign->execute();
+            }
+            // Upsert weekly prices
+            $prices = [];
+            for ($d = 0; $d <= 6; $d++) {
+                $key = 'weekly_price_' . $d;
+                if (isset($_POST[$key]) && $_POST[$key] !== '') {
+                    $prices[$d] = (float)$_POST[$key];
+                }
+            }
+            upsertWeeklyPrices($conn, $item_id, $weekly_store_id, $prices);
+            // Remove weekly prices for other stores to keep single-store constraint simple
+            $cleanup = $conn->prepare("DELETE FROM item_weekly_prices WHERE item_id = ? AND store_id <> ?");
+            if ($cleanup) {
+                $cleanup->bind_param('ii', $item_id, $weekly_store_id);
+                $cleanup->execute();
+            }
+        } else {
+            // If disabled, remove any weekly prices set for this item
+            $del = $conn->prepare("DELETE FROM item_weekly_prices WHERE item_id = ?");
+            if ($del) {
+                $del->bind_param('i', $item_id);
+                $del->execute();
+            }
+        }
+
         echo json_encode(['success' => true, 'message' => 'Item updated successfully']);
     } catch (Exception $e) {
         // Rollback on error

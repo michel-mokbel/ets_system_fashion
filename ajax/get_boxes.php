@@ -127,13 +127,15 @@ $data = [];
 while ($row = $result->fetch_assoc()) {
     // Format values
     $created_date = date('M d, Y', strtotime($row['created_at']));
-    
-    // Action buttons
-    $actions = '
+
+    if (is_admin() || is_inventory_manager()):
+        // Action buttons
+        $actions = '
         <div class="d-flex gap-1">
             <button class="btn btn-sm btn-info view-box" data-id="' . $row['id'] . '" title="View Details">
                 <i class="bi bi-eye"></i>
             </button>
+            
             <button class="btn btn-sm btn-primary edit-box" data-id="' . $row['id'] . '" title="Edit Box">
                 <i class="bi bi-pencil"></i>
             </button>
@@ -142,6 +144,15 @@ while ($row = $result->fetch_assoc()) {
             </button>
         </div>
     ';
+    else:
+        $actions = '
+        <div class="d-flex gap-1">
+            <button class="btn btn-sm btn-info view-box" data-id="' . $row['id'] . '" title="View Details">
+                <i class="bi bi-eye"></i>
+            </button>
+        </div>
+    ';
+    endif;
     
     $data[] = [
         '', // Expand button placeholder
@@ -179,4 +190,3 @@ echo json_encode([
         'types' => $types
     ]
 ]);
-?> 
